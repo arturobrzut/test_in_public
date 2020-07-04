@@ -9,6 +9,10 @@
 name: Build and Deploy to IKS
 
 on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
   release:
     types: [created]
 
