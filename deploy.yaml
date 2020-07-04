@@ -1,0 +1,58 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mq-advanced
+  namespace: default
+  labels:
+    app: business
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: business
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: business
+      annotations:
+        cloudpakId: c8b82d189e7545f0892db9ef2731b90d
+        productVersion: 9.1.3
+        productID: 208423bb063c43288328b1d788745b0c
+        cloudpakName: Pak for Integration
+        cloudpakVersion: 2019.2.1
+        productChargedContainers: All
+        productCloudpakRatio: '2:1'
+        productName: MQ Advanced
+        productMetric: PROCESSOR_CORE
+    spec:
+      containers:
+        - name: container1
+          image: busybox
+          command:
+            - tail
+            - '-f'
+            - /dev/null
+          resources:
+            limits:
+              cpu: 600m
+            requests:
+              cpu: 300m
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 1000
+            procMount: Default
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
