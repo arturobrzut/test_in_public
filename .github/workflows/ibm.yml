@@ -20,11 +20,11 @@ on:
 env:
   GITHUB_SHA: ${{ github.sha }}
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
-  IBM_CLOUD_REGION: us-south
+  IBM_CLOUD_REGION: eu-de
   ICR_NAMESPACE: ${{ secrets.ICR_NAMESPACE }}
   REGISTRY_HOSTNAME: us.icr.io
   IMAGE_NAME: iks-test
-  IKS_CLUSTER: example-iks-cluster-name-or-id
+  IKS_CLUSTER: license-service-test
   DEPLOYMENT_NAME: iks-test
   PORT: 5001
 
@@ -55,9 +55,9 @@ jobs:
 
     - name: Create K8s
       run: |
-        ibmcloud ks cluster ls | grep license-service
-#        ibmcloud ks cluster create classic --name license-service
-#        ibmcloud ks cluster rm  --cluster bs0q0k0d0ht8kaup4s60
+        ibmcloud ks cluster ls | grep $IKS_CLUSTER
+#        ibmcloud ks cluster create classic --name $IKS_CLUSTER
+
         
 
     # Deploy the  to the IKS cluster
@@ -70,3 +70,4 @@ jobs:
 #        kubectl create service loadbalancer $DEPLOYMENT_NAME --tcp=80:$PORT --dry-run -o yaml > service.yaml
  #       kubectl apply -f service.yaml
   #      kubectl get services -o wide
+        # ibmcloud ks cluster rm  --cluster $IKS_CLUSTER
