@@ -53,6 +53,13 @@ jobs:
         ibmcloud cr region-set "${IBM_CLOUD_REGION}"
         ibmcloud cr login
 
+    - name: Create K8s
+      run: |
+        ibmcloud ks cluster ls | grep license-service
+#        ibmcloud ks cluster create classic --name license-service
+#        ibmcloud ks cluster rm  --cluster bs0q0k0d0ht8kaup4s60
+        
+
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
       run: |
