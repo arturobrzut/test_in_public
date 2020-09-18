@@ -57,7 +57,16 @@ jobs:
         /bin/bash ./start_iks.sh ${{ github.event.inputs.iks_name }}
 
     # Deploy the  to the IKS cluster
-    - name: Deploy to IKS
+    - name: Deploy to IKS1
+      if: github.event.inputs.iks_name  != ''
+      run: |
+        export CN=${{ github.event.inputs.iks_name }}
+        ibmcloud ks cluster config --cluster $CN  --yaml --admin
+        kubectl config current-context
+        kubectl get nodes
+
+    - name: Deploy to IKS2
+      if: github.event.inputs.iks_name  == ''
       run: |
         export CN=`cat ./clustername.txt`
         ibmcloud ks cluster config --cluster $CN  --yaml --admin
