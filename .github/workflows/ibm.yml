@@ -54,7 +54,7 @@ jobs:
       run: |
         pwd
         chmod 755 ./start_iks.sh
-        /bin/sh ./start_iks.sh
+        /bin/bash ./start_iks.sh
 
         
 
