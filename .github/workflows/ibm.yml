@@ -65,7 +65,7 @@ jobs:
         kubectl get nodes
 
     - name: Remove IKS
-      if: github.event.inputs.iks_name  == ''
+      if: github.event.inputs.iks_name  == '' && always()
       run: |
         export CN=`cat ./clustername.txt`
         echo "REMOVE IT"
