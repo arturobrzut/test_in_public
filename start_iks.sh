@@ -1,15 +1,16 @@
 #!/bin/bash
-echo $IKS_CLUSTER$BUILD_NUMBER
-ibmcloud ks cluster ls |grep $IKS_CLUSTER$BUILD_NUMBER
-if [[ $? -eq 0 ]]
+export RANDFILE=`cat ./random.txt`
+export CN=$IKS_CLUSTER$RANDFILE
+echo $CN
+ibmcloud ks cluster ls |grep $CN
 then
    echo "."
 else
-   ibmcloud ks cluster create classic --name $IKS_CLUSTER$BUILD_NUMBER
+   ibmcloud ks cluster create classic --name $CN
    sleep 5
 fi
 
-ibmcloud ks cluster ls |grep $IKS_CLUSTER$BUILD_NUMBER > log.txt
+ibmcloud ks cluster ls |grep $CN > log.txt
 cat log.txt
 cat log.txt | grep normal
 if [[ $? -eq 0 ]]
