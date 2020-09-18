@@ -67,4 +67,10 @@ jobs:
         ibmcloud ks cluster config --cluster $CN  --yaml --admin
         kubectl config current-context
         kubectl get nodes
-        # ibmcloud ks cluster rm  --cluster $CN
+
+    - name: Remove IKS
+      run: |
+        export RANDFILE=`cat ./random.txt`
+        export CN=$IKS_CLUSTER$RANDFILE
+        echo $CN
+        ibmcloud ks cluster rm  --cluster $CN
