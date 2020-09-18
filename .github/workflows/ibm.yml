@@ -59,6 +59,9 @@ jobs:
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
       run: |
+        pwd
+        chmod 755 ./start_iks.sh
+        ./start_iks.sh
         ibmcloud ks cluster config --cluster $IKS_CLUSTER  --yaml --admin
         kubectl config current-context
         kubectl apply -f deploy.yaml
