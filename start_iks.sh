@@ -11,7 +11,7 @@ fi
 ibmcloud ks cluster ls |grep license-service2 > log.txt
 cat log.txt
 cat log.txt | grep normal
-if [[ $? -eg 0 ]]
+if [[ $? -eq 0 ]]
 then
    echo "Cluster was created"
    exit 0
