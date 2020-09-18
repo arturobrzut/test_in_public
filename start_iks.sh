@@ -6,16 +6,23 @@ export IKS_CLUSTER_PRIVATE_VLAN=2918270
 export IKS_CLUSTER_PUBLIC_VLAN=2918268
 export IKS_CLUSTER_FLAVOR=u3c.2x4
 export IKS_CLUSTER_TAG_NAMES="owner:artur.bereta,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
-echo Cluster which we can ganerate $CN
+
 
 echo Input cluster $1
 if [ -z "$1" ]
+   echo Cluster which we can ganerate $CN
 then
         echo "."
 else
+        echo Try to use Cluster  $1
         echo $1 > ./clustername.txt
-        echo "Skip creating use this IKS $1"
-        exit
+        ibmcloud ks cluster config --cluster $1  --yaml --admin
+        kubectl config current-context
+        kubectl get nodes
+        echo $?
+        kubectl get namespace |grep ibm-common-services
+        echo $?
+        exit 0
 fi
 
 
@@ -34,7 +41,14 @@ cat log.txt | grep normal
 if [[ $? -eq 0 ]]
 then
    echo "Cluster was created"
-   exit 0
+   ibmcloud ks cluster config --cluster $CN  --yaml --admin
+   kubectl config current-context
+   kubectl get nodes
+   echo $?
+   kubectl get namespace |grep ibm-common-services
+   echo $?
+
+  exit 0
 else
    echo "Wait creating cluster"
    cat log.txt
