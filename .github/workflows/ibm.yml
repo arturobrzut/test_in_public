@@ -56,16 +56,10 @@ jobs:
         chmod 755 ./start_iks.sh
         /bin/bash ./start_iks.sh
 
-        
-
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
       run: |
         ibmcloud ks cluster config --cluster $IKS_CLUSTER  --yaml --admin
         kubectl config current-context
-        kubectl apply -f deploy.yaml
-        kubectl rollout status deployment/$DEPLOYMENT_NAME
-#        kubectl create service loadbalancer $DEPLOYMENT_NAME --tcp=80:$PORT --dry-run -o yaml > service.yaml
- #       kubectl apply -f service.yaml
-  #      kubectl get services -o wide
+        kubectl get nodes
         # ibmcloud ks cluster rm  --cluster $IKS_CLUSTER
