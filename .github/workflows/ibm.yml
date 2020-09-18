@@ -66,4 +66,8 @@ jobs:
     - name: Remove IKS
       run: |
         export CN=`cat ./clustername.txt`
-        # ibmcloud ks cluster rm  --cluster $CN
+        if: github.event.inputs.iks_name == ''
+            name: Remove if empty ha
+            run: |
+              echo "REMOVE IT"
+              # ibmcloud ks cluster rm  --cluster $CN -f
