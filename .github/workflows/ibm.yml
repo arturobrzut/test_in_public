@@ -41,7 +41,7 @@ jobs:
         ibmcloud config --check-version=false
         ibmcloud plugin install -f kubernetes-service
         ibmcloud plugin install -f container-registry
-        echo $RANDOM > ./random.txt
+        echo $IKS_CLUSTER$RANDOM > ./clustername.txt
 
     # Authenticate with IBM Cloud CLI
     - name: Authenticate with IBM Cloud CLI
@@ -58,16 +58,12 @@ jobs:
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
       run: |
-        export RANDFILE=`cat ./random.txt`
-        export CN=$IKS_CLUSTER$RANDFILE
-        echo $CN
+        export CN=`cat ./clustername.txt`
         ibmcloud ks cluster config --cluster $CN  --yaml --admin
         kubectl config current-context
         kubectl get nodes
 
     - name: Remove IKS
       run: |
-        export RANDFILE=`cat ./random.txt`
-        export CN=$IKS_CLUSTER$RANDFILE
-        echo $CN
+        export CN=`cat ./clustername.txt`
         # ibmcloud ks cluster rm  --cluster $CN
