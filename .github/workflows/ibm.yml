@@ -52,7 +52,7 @@ jobs:
 
     - name: Create K8s
       run: |
-        pwd
+        export NUMBER=`head -200 /dev/urandom | cksum | cut -f1 -d " "`
         chmod 755 ./start_iks.sh
         /bin/bash ./start_iks.sh
 
