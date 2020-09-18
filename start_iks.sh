@@ -3,6 +3,7 @@ export RANDFILE=`cat ./random.txt`
 export CN=$IKS_CLUSTER$RANDFILE
 echo $CN
 ibmcloud ks cluster ls |grep $CN
+if [[ $? -eq 0 ]]
 then
    echo "."
 else
@@ -20,6 +21,6 @@ then
 else
    echo "Wait creating cluster"
    cat log.txt
-   sleep 10
+   sleep 60
    ./start_iks.sh
 fi
