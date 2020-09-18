@@ -1,6 +1,6 @@
 #!/bin/sh
 ibmcloud ks cluster ls |grep license-service2 
-if [ $? == 0 ]
+if [[ $? -eq 0 ]]
 then
    echo "."
 else
@@ -11,7 +11,7 @@ fi
 ibmcloud ks cluster ls |grep license-service2 > log.txt
 cat log.txt
 cat log.txt | grep normal
-if [ $? == 0 ]
+if [[ $? -eg 0 ]]
 then
    echo "Cluster was created"
    exit 0
