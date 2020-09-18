@@ -52,16 +52,15 @@ jobs:
 
     - name: Create K8s
       run: |
-        ibmcloud ks cluster create classic --name $IKS_CLUSTER 
+        pwd
+        chmod 755 ./start_iks.sh
+        /bin/sh ./start_iks.sh
 
         
 
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
       run: |
-        pwd
-        chmod 755 ./start_iks.sh
-        ./start_iks.sh
         ibmcloud ks cluster config --cluster $IKS_CLUSTER  --yaml --admin
         kubectl config current-context
         kubectl apply -f deploy.yaml
