@@ -11,10 +11,10 @@ name: Build and Deploy to IKS
 on:
   workflow_dispatch:
     inputs:
-      branch_name:
-        description: 'branch'
-        required: true
-        default: 'master'
+      iks_name:
+        description: 'iks cluster name'
+        required: false
+        default: ''
   pull_request:
 
 # Environment variables available to all jobs and steps in this workflow
