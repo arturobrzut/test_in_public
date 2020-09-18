@@ -1,4 +1,13 @@
 #!/bin/sh
+ibmcloud ks cluster ls |grep license-service2 
+if [ $? == 0 ]
+then
+   echo "."
+   sleep 5
+else
+   ibmcloud ks cluster create classic --name $IKS_CLUSTER 
+fi
+
 ibmcloud ks cluster ls |grep license-service2 > log.txt
 cat log.txt
 cat log.txt | grep normal
