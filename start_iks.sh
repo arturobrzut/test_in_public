@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ibmcloud ks cluster ls |grep license-service2 
 if [[ $? -eq 0 ]]
 then
