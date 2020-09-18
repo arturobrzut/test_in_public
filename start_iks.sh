@@ -2,6 +2,7 @@
 export RANDFILE=`cat ./random.txt`
 export CN=$IKS_CLUSTER$RANDFILE
 export IKS_CLUSTER_ZONE=dal10
+#ibmcloud ks vlan ls --zone $IKS_CLUSTER_ZONE
 export IKS_CLUSTER_PRIVATE_VLAN=2918270
 export IKS_CLUSTER_PUBLIC_VLAN=2918268
 export IKS_CLUSTER_FLAVOR=u3c.2x4
