@@ -53,12 +53,14 @@ jobs:
     - name: Create K8s
       run: |
         export NUMBER=`head -200 /dev/urandom | cksum | cut -f1 -d " "`
+        export IKS_CLUSTER=$IKS_CLUSTER$NUMBER
         chmod 755 ./start_iks.sh
         /bin/bash ./start_iks.sh
 
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
       run: |
+        echo $IKS_CLUSTER
         ibmcloud ks cluster config --cluster $IKS_CLUSTER  --yaml --admin
         kubectl config current-context
         kubectl get nodes
