@@ -26,7 +26,8 @@ else
        sleep 20
        kubectl get namespace |grep ibm-common-services
   done  
-  echo $?
+  echo "There is not ibm-common-services Namespace. It will be create"
+  kubectl create namespace ibm-common-services
   exit 0
 fi
 
@@ -48,10 +49,18 @@ then
    echo "Cluster was created"
    ibmcloud ks cluster config --cluster $CN  --yaml --admin
    kubectl config current-context
-   kubectl get nodes
-   echo $?
-   kubectl get namespace |grep ibm-common-services
-   echo $?
+     kubectl get nodes
+     if [[ $? -ne 0 ]]
+     then
+        echo "ERROR CANNOT GET NODES!!!" 
+     fi     kubectl get namespace |grep ibm-common-services
+     while [ $? -eq 0 ] ; do
+          echo "There is namespace ibm-common-services inside cluster. Wait for removing it. Please remove it"
+          sleep 20
+          kubectl get namespace |grep ibm-common-services
+     done  
+     echo "There is not ibm-common-services Namespace. It will be create"
+     kubectl create namespace ibm-common-services
 
   exit 0
 else
