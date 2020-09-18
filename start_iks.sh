@@ -9,14 +9,14 @@ export IKS_CLUSTER_TAG_NAMES="owner:artur.bereta,team:CP4MCM,Usage:temp,Usage_de
 echo Cluster which we can ganerate $CN
 
 echo Input cluster $1
-
-if [[ $1 -eq '' ]]
+if [ -z "$1" ]
 then
         echo "."
 else
         echo "Skip creating use this IKS $1"
         exit
 fi
+
 
 ibmcloud ks cluster ls |grep $CN
 if [[ $? -eq 0 ]]
