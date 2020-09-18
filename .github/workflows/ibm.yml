@@ -14,7 +14,6 @@ on:
       iks_name:
         description: 'iks cluster name'
         required: false
-        default: ''
   pull_request:
 
 # Environment variables available to all jobs and steps in this workflow
@@ -36,6 +35,7 @@ jobs:
     # Download and Install IBM Cloud CLI
     - name: Install IBM Cloud CLI
       run: |
+        echo  ${{ github.event.inputs.iks_name }}
         curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
         ibmcloud --version
         ibmcloud config --check-version=false
@@ -52,6 +52,7 @@ jobs:
 
     - name: Create K8s
       run: |
+        echo  ${{ github.event.inputs.iks_name }}
         chmod 755 ./start_iks.sh
         /bin/bash ./start_iks.sh ${{ github.event.inputs.iks_name }}
 
