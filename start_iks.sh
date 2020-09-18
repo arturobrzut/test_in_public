@@ -9,7 +9,7 @@ export IKS_CLUSTER_TAG_NAMES="owner:artur.bereta,team:CP4MCM,Usage:temp,Usage_de
 echo $CN
 
 
-if [[ $1 -eq "" ]]
+if [[ $1 -eq '' ]]
 then
         echo "."
 else
