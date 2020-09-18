@@ -57,27 +57,16 @@ jobs:
         /bin/bash ./start_iks.sh ${{ github.event.inputs.iks_name }}
 
     # Deploy the  to the IKS cluster
-    - name: Deploy to IKS1
-      if: github.event.inputs.iks_name  != ''
+    - name: Deploy to IKS
       run: |
         export CN=${{ github.event.inputs.iks_name }}
         ibmcloud ks cluster config --cluster $CN  --yaml --admin
         kubectl config current-context
         kubectl get nodes
 
-    - name: Deploy to IKS2
+    - name: Remove IKS
       if: github.event.inputs.iks_name  == ''
       run: |
         export CN=`cat ./clustername.txt`
-        ibmcloud ks cluster config --cluster $CN  --yaml --admin
-        kubectl config current-context
-        kubectl get nodes
-
-    - name: Remove IKS
-      run: |
-        export CN=`cat ./clustername.txt`
-        if: github.event.inputs.iks_name == ''
-            name: Remove if empty ha
-            run: |
-              echo "REMOVE IT"
-              # ibmcloud ks cluster rm  --cluster $CN -f
+        echo "REMOVE IT"
+        ibmcloud ks cluster rm  --cluster $CN -f
