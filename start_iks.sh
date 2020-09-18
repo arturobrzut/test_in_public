@@ -7,7 +7,7 @@ if [[ $? -eq 0 ]]
 then
    echo "."
 else
-   ibmcloud ks cluster create classic --name $CN --flavor $IKS_CLUSTER_FLAVOR --hardware shared --workers 1
+   ibmcloud ks cluster create classic --name $CN --flavor $IKS_CLUSTER_FLAVOR --hardware shared --workers 1 --zone dal10
    sleep 5
 fi
 
