@@ -13,6 +13,7 @@ if [ -z "$1" ]
 then
         echo "."
 else
+        echo $1 > ./clustername.txt
         echo "Skip creating use this IKS $1"
         exit
 fi
