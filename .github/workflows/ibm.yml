@@ -59,10 +59,7 @@ jobs:
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
       run: |
-        export CN=${{ github.event.inputs.iks_name }}
-        ibmcloud ks cluster config --cluster $CN  --yaml --admin
-        kubectl config current-context
-        kubectl get nodes
+        kubectl get pods --all-namespaces
 
     - name: Remove IKS
       if: github.event.inputs.iks_name  == '' && always()
