@@ -1,5 +1,6 @@
 #!/bin/bash
-ibmcloud ks cluster ls |grep license-service2 
+echo $IKS_CLUSTER 
+ibmcloud ks cluster ls |grep $IKS_CLUSTER 
 if [[ $? -eq 0 ]]
 then
    echo "."
@@ -8,7 +9,7 @@ else
    sleep 5
 fi
 
-ibmcloud ks cluster ls |grep license-service2 > log.txt
+ibmcloud ks cluster ls |grep $IKS_CLUSTER > log.txt
 cat log.txt
 cat log.txt | grep normal
 if [[ $? -eq 0 ]]
