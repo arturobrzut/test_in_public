@@ -42,6 +42,7 @@ jobs:
         ibmcloud config --check-version=false
         ibmcloud plugin install -f kubernetes-service
         ibmcloud plugin install -f container-registry
+        echo $RANDOM > ./random.txt
 
     # Authenticate with IBM Cloud CLI
     - name: Authenticate with IBM Cloud CLI
@@ -52,15 +53,16 @@ jobs:
 
     - name: Create K8s
       run: |
-        echo $BUILD_NUMBER
         chmod 755 ./start_iks.sh
         /bin/bash ./start_iks.sh
 
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
       run: |
-        echo $IKS_CLUSTER
-        ibmcloud ks cluster config --cluster $IKS_CLUSTER$BUILD_NUMBER  --yaml --admin
+        export RANDFILE=`cat ./random.txt`
+        export CN=$IKS_CLUSTER$RANDFILE
+        echo $CN
+        ibmcloud ks cluster config --cluster $CN  --yaml --admin
         kubectl config current-context
         kubectl get nodes
-        # ibmcloud ks cluster rm  --cluster $IKS_CLUSTER$BUILD_NUMBER
+        # ibmcloud ks cluster rm  --cluster $CN
