@@ -52,8 +52,7 @@ jobs:
 
     - name: Create K8s
       run: |
-        export IKS_CLUSTER=$IKS_CLUSTER$RANDOM
-        echo $IKS_CLUSTER
+        echo $BUILD_NUMBER
         chmod 755 ./start_iks.sh
         /bin/bash ./start_iks.sh
 
@@ -61,7 +60,7 @@ jobs:
     - name: Deploy to IKS
       run: |
         echo $IKS_CLUSTER
-        ibmcloud ks cluster config --cluster $IKS_CLUSTER  --yaml --admin
+        ibmcloud ks cluster config --cluster $IKS_CLUSTER$BUILD_NUMBER  --yaml --admin
         kubectl config current-context
         kubectl get nodes
-        # ibmcloud ks cluster rm  --cluster $IKS_CLUSTER
+        # ibmcloud ks cluster rm  --cluster $IKS_CLUSTER$BUILD_NUMBER
