@@ -15,10 +15,7 @@ on:
         description: 'branch'
         required: true
         default: 'master'
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 # Environment variables available to all jobs and steps in this workflow
 env:
