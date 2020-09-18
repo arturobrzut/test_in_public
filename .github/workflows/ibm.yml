@@ -22,7 +22,7 @@ env:
   GITHUB_SHA: ${{ github.sha }}
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
   IBM_CLOUD_REGION: eu-de
-  IKS_CLUSTER: license-service-$RANDOM
+  IKS_CLUSTER: license-service
   DEPLOYMENT_NAME: mq-advanced
 
 jobs:
@@ -52,6 +52,7 @@ jobs:
 
     - name: Create K8s
       run: |
+        export IKS_CLUSTER=$IKS_CLUSTER$RANDOM
         echo $IKS_CLUSTER
         chmod 755 ./start_iks.sh
         /bin/bash ./start_iks.sh
