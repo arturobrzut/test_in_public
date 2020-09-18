@@ -1,6 +1,5 @@
 #!/bin/bash
-export RANDFILE=`cat ./random.txt`
-export CN=$IKS_CLUSTER$RANDFILE
+export CN=`cat ./clustername.txt`
 export IKS_CLUSTER_ZONE=dal10
 #ibmcloud ks vlan ls --zone $IKS_CLUSTER_ZONE
 export IKS_CLUSTER_PRIVATE_VLAN=2918270
@@ -8,6 +7,7 @@ export IKS_CLUSTER_PUBLIC_VLAN=2918268
 export IKS_CLUSTER_FLAVOR=u3c.2x4
 export IKS_CLUSTER_TAG_NAMES="owner:artur.bereta,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
 echo $CN
+
 ibmcloud ks cluster ls |grep $CN
 if [[ $? -eq 0 ]]
 then
