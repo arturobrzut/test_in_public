@@ -16,8 +16,16 @@ else
   ibmcloud ks cluster config --cluster $1  --yaml --admin
   kubectl config current-context
   kubectl get nodes
-  echo $?
+  if [[ $? -ne 0 ]]
+  then
+     echo "ERROR CANNOT GET NODES!!!" 
+  fi
   kubectl get namespace |grep ibm-common-services
+  while [ $? -eq 0 ] ; do
+       echo "There is namespace ibm-common-services inside cluster. Wait for removing it. Please remove it"
+       sleep 20
+       kubectl get namespace |grep ibm-common-services
+  done  
   echo $?
   exit 0
 fi
