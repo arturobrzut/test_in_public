@@ -1,12 +1,12 @@
 #!/bin/bash
-export CN=`cat ./clustername.txt`
+export CN="license-service$RANDOM"
 export IKS_CLUSTER_ZONE=dal10
 #ibmcloud ks vlan ls --zone $IKS_CLUSTER_ZONE
 export IKS_CLUSTER_PRIVATE_VLAN=2918270
 export IKS_CLUSTER_PUBLIC_VLAN=2918268
 export IKS_CLUSTER_FLAVOR=u3c.2x4
 export IKS_CLUSTER_TAG_NAMES="owner:artur.bereta,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
-
+rm -f once.txt
 if [ -z "$1" ]
 then
    echo "try to find cluster license-service"
@@ -51,9 +51,16 @@ then
   exit 1
 fi
 kubectl get namespace |grep ibm-common-services
+i=0
 while [ $? -eq 0 ] ; do
     echo "There is namespace ibm-common-services inside cluster. Wait for removing it. Please remove it"
-    sleep 20
+    sleep 2
+    i=$i+1
+    if [[ $i -gt 10 ]]
+    then
+        echo "Delete namespace ibm-common-services"
+	kubectl delete namespace ibm-common-services
+    fi	   
     kubectl get namespace |grep ibm-common-services
 done  
 echo "There is not ibm-common-services Namespace. It will be create"
