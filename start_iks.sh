@@ -15,11 +15,10 @@ then
    then
       cat once.txt | awk '{print $1}' >  ./clustername.txt
       export CN=`cat ./clustername.txt`
-      echo "Cluser was found" $CN
+      echo "Cluser was found $CN"
    fi
 else
-  echo "You choice to use cluster"
-  echo $1
+  echo "You choice to use cluster $1"
   echo $1 > ./clustername.txt
   export CN=`cat ./clustername.txt`
 fi
@@ -29,22 +28,20 @@ if [[ $? -eq 0 ]]
 then
    echo "Cluster exists"
 else
-   echo "Start creating cluster "
-   echo $CN
+   echo "Start creating cluster $CN"
    ibmcloud ks cluster create classic --name $CN --flavor $IKS_CLUSTER_FLAVOR --hardware shared --workers 1 --zone $IKS_CLUSTER_ZONE --public-vlan $IKS_CLUSTER_PUBLIC_VLAN --private-vlan $IKS_CLUSTER_PRIVATE_VLAN
    sleep 10
    
    ibmcloud ks cluster ls | grep $CN | grep normal 
    while [ $? -ne 0 ] ; do
-     echo "Wait for cluster creation"
+     echo "Wait for cluster creation 30s"
      sleep 30
      ibmcloud ks cluster ls |grep $CN | grep normal 
    done  
-   echo "Cluster was created"
+   echo "Cluster was createdi $CN"
 fi
 
-echo "Try to connect to the cluster"
-echo $CN
+echo "Try to connect to the cluster $CN"
 ibmcloud ks cluster config --cluster $CN  --yaml --admin
 kubectl config current-context
 kubectl get nodes
