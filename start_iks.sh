@@ -18,7 +18,8 @@ then
       echo "Cluser was found" $CN
    fi
 else
-  echo "You choice to use cluster" $1
+  echo "You choice to use cluster"
+  echo $1
   echo $1 > ./clustername.txt
   export CN=`cat ./clustername.txt`
 fi
@@ -28,7 +29,8 @@ if [[ $? -eq 0 ]]
 then
    echo "Cluster exists"
 else
-   echo "Start creating cluster " $CN
+   echo "Start creating cluster "
+   echo $CN
    ibmcloud ks cluster create classic --name $CN --flavor $IKS_CLUSTER_FLAVOR --hardware shared --workers 1 --zone $IKS_CLUSTER_ZONE --public-vlan $IKS_CLUSTER_PUBLIC_VLAN --private-vlan $IKS_CLUSTER_PRIVATE_VLAN
    sleep 10
    
@@ -41,7 +43,8 @@ else
    echo "Cluster was created"
 fi
 
-echo "Try to connect to the cluster" $CN
+echo "Try to connect to the cluster"
+echo $CN
 ibmcloud ks cluster config --cluster $CN  --yaml --admin
 kubectl config current-context
 kubectl get nodes
