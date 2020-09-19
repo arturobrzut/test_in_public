@@ -82,6 +82,14 @@ jobs:
           httpsEnable: false
           instanceNamespace: ibm-common-services
         EOF
+    - name: Clean
+      if: always()
+      run: |
+        kubectl delete OperatorSource opencloud-operators  -n openshift-marketplace
+        kubectl delete namespace ibm-common-services
+
+        
+        
 
 
         
