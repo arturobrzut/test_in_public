@@ -65,3 +65,5 @@ while [ $? -eq 0 ] ; do
 done  
 echo "There is not ibm-common-services Namespace. It will be create"
 kubectl create namespace ibm-common-services
+kubectl create namespace olm
+kubectl create namespace marketplace
