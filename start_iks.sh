@@ -5,7 +5,7 @@ export IKS_CLUSTER_ZONE=dal10
 #ibmcloud ks vlan ls --zone $IKS_CLUSTER_ZONE
 export IKS_CLUSTER_PRIVATE_VLAN=2918270
 export IKS_CLUSTER_PUBLIC_VLAN=2918268
-export VERSION="4.4_openshift"
+export VERSION="4.3_openshift"
 export IKS_CLUSTER_FLAVOR=b3c.4x16.encrypted  
 #u3c.2x4
 export IKS_CLUSTER_TAG_NAMES="owner:artur.obrzut,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
