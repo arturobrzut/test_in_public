@@ -31,7 +31,14 @@ else
   exit 0
 fi
 
-
+#only once
+ibmcloud ks cluster  ls |grep license-service  | grep -m1 normal > once.txt
+if [[ $? -eq 0 ]]
+then
+   cat once.txt | awk '{print $1}' >  ./clustername.txt
+   export CN=`cat ./clustername.txt`
+fi
+   
 ibmcloud ks cluster ls |grep $CN
 if [[ $? -eq 0 ]]
 then
