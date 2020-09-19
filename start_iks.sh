@@ -10,7 +10,7 @@ rm -f once.txt
 if [ -z "$1" ]
 then
    echo "try to find cluster license-service"
-   ibmcloud ks cluster ls |grep license-service  | grep -m1 normal > once.txt
+   ibmcloud oc cluster ls |grep license-service  | grep -m1 normal > once.txt
    if [[ $? -eq 0 ]]
    then
       cat once.txt | awk '{print $1}' >  ./clustername.txt
@@ -29,20 +29,20 @@ then
    echo "Cluster exists"
 else
    echo "Start creating cluster $CN"
-   ibmcloud ks cluster create classic --name $CN --flavor $IKS_CLUSTER_FLAVOR --hardware shared --workers 1 --zone $IKS_CLUSTER_ZONE --public-vlan $IKS_CLUSTER_PUBLIC_VLAN --private-vlan $IKS_CLUSTER_PRIVATE_VLAN
+   ibmcloud oc cluster create classic --name $CN --flavor $IKS_CLUSTER_FLAVOR --hardware shared --workers 1 --zone $IKS_CLUSTER_ZONE --public-vlan $IKS_CLUSTER_PUBLIC_VLAN --private-vlan $IKS_CLUSTER_PRIVATE_VLAN   --public-service-endpoint  --version 4.4_openshift 
    sleep 10
    
-   ibmcloud ks cluster ls | grep $CN | grep normal 
+   ibmcloud oc cluster ls | grep $CN | grep normal 
    while [ $? -ne 0 ] ; do
      echo "Wait for cluster creation 30s"
      sleep 30
-     ibmcloud ks cluster ls |grep $CN | grep normal 
+     ibmcloud oc cluster ls |grep $CN | grep normal 
    done  
    echo "Cluster was createdi $CN"
 fi
 
 echo "Try to connect to the cluster $CN"
-ibmcloud ks cluster config --cluster $CN  --yaml --admin
+ibmcloud oc cluster config --cluster $CN  --yaml --admin
 kubectl config current-context
 kubectl get nodes
 if [[ $? -ne 0 ]]
@@ -60,12 +60,8 @@ while [ $? -eq 0 ] ; do
     then
         echo "Delete namespace ibm-common-services"
 	kubectl delete namespace ibm-common-services
-	kubectl delete namespace olm
-        kubectl delete namespace marketplace
     fi	   
     kubectl get namespace |grep ibm-common-services
 done  
 echo "There is not ibm-common-services Namespace. It will be create"
 kubectl create namespace ibm-common-services
-kubectl create namespace olm
-kubectl create namespace marketplace
