@@ -93,15 +93,4 @@ jobs:
         EOF
 
 
-    - name: Remove IKS
-      if: github.event.inputs.iks_name  == '' && always()
-      run: |
-        export CN=`cat ./clustername.txt`
-        echo "REMOVE IT"
-        ibmcloud ks cluster rm  --cluster $CN -f
-        
-    - name: Remove data from IKS
-      if: github.event.inputs.iks_name  != '' && always()
-      run: |
-        kubectl delete namespace ibm-common-services
         
