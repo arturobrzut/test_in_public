@@ -68,11 +68,9 @@ jobs:
       run:  |
         pwd
         ls -lrt
-        ./ibm-licensing-operator/common/scripts/ibm_licensing_operator_install.sh --olm_global_catalog_namespace olm
+        ./ibm-licensing-operator/common/scripts/ibm_licensing_operator_install.sh --olm_global_catalog_namespace openshift-marketplace
     - name: Configure License Service
       run: |
-        echo '::set-env name=LS_PATH::/ibm-licensing-service-instance'
-        INGRESS_SUBDOMAIN="$(ibmcloud ks cluster get -c licenseService_cluster | grep  "Ingress Subdomain:" | awk '{print $3}')"
         cat <<EOF | kubectl apply -f -
         apiVersion: operator.ibm.com/v1alpha1
         kind: IBMLicensing
@@ -83,12 +81,6 @@ jobs:
           datasource: datacollector
           httpsEnable: false
           instanceNamespace: ibm-common-services
-          ingressEnabled: true
-          ingressOptions:
-            annotations:
-              ingress.bluemix.net/rewrite-path: "serviceName=ibm-licensing-service-instance rewrite=/"
-            path: $LS_PATH
-            host: $INGRESS_SUBDOMAIN
         EOF
 
 
