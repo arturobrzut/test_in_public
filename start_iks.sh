@@ -1,16 +1,18 @@
 #!/bin/bash
-export CN="license-service$RANDOM"
+export CNAME=ibm-lic-ocp-aobrzut
+export CN="$CNAME$RANDOM"
 export IKS_CLUSTER_ZONE=dal10
 #ibmcloud ks vlan ls --zone $IKS_CLUSTER_ZONE
 export IKS_CLUSTER_PRIVATE_VLAN=2918270
 export IKS_CLUSTER_PUBLIC_VLAN=2918268
 export IKS_CLUSTER_FLAVOR=u3c.2x4
+
 export IKS_CLUSTER_TAG_NAMES="owner:artur.bereta,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
 rm -f once.txt
 if [ -z "$1" ]
 then
-   echo "try to find cluster license-service"
-   ibmcloud oc cluster ls |grep license-service  | grep -m1 normal > once.txt
+   echo "try to find cluster $CNAME"
+   ibmcloud oc cluster ls |grep $CNAME  | grep -m1 normal > once.txt
    if [[ $? -eq 0 ]]
    then
       cat once.txt | awk '{print $1}' >  ./clustername.txt
