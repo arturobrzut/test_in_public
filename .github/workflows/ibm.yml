@@ -32,6 +32,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Download LS repository
+      run: git clone https://github.com/IBM/ibm-licensing-operator.git
+      
     # Download and Install IBM Cloud CLI
     - name: Install IBM Cloud CLI
       run: |
@@ -60,6 +63,35 @@ jobs:
     - name: Deploy to IKS
       run: |
         kubectl get pods --all-namespaces
+
+    - name: Install License Service
+      run:  |
+        pwd
+        ls -lrt
+        ./ibm-licensing-operator/common/scripts/ibm_licensing_operator_install.sh --olm_global_catalog_namespace ibm-common-services
+
+    - name: Configure License Service
+      run: |
+        echo '::set-env name=LS_PATH::/ibm-licensing-service-instance'
+        INGRESS_SUBDOMAIN="$(ibmcloud ks cluster get -c licenseService_cluster | grep  "Ingress Subdomain:" | awk '{print $3}')"
+        cat <<EOF | kubectl apply -f -
+        apiVersion: operator.ibm.com/v1alpha1
+        kind: IBMLicensing
+        metadata:
+          name: instance
+        spec:
+          apiSecretToken: ibm-licensing-token
+          datasource: datacollector
+          httpsEnable: false
+          instanceNamespace: ibm-common-services
+          ingressEnabled: true
+          ingressOptions:
+            annotations:
+              ingress.bluemix.net/rewrite-path: "serviceName=ibm-licensing-service-instance rewrite=/"
+            path: $LS_PATH
+            host: $INGRESS_SUBDOMAIN
+        EOF
+
 
     - name: Remove IKS
       if: github.event.inputs.iks_name  == '' && always()
