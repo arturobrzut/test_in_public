@@ -1,13 +1,14 @@
 #!/bin/bash
-export CNAME=ibm-lic-ocp-aobrzut
+export CNAME=licenseservice
 export CN="$CNAME$RANDOM"
 export IKS_CLUSTER_ZONE=dal10
 #ibmcloud ks vlan ls --zone $IKS_CLUSTER_ZONE
 export IKS_CLUSTER_PRIVATE_VLAN=2918270
 export IKS_CLUSTER_PUBLIC_VLAN=2918268
-export IKS_CLUSTER_FLAVOR=u3c.2x4
-
-export IKS_CLUSTER_TAG_NAMES="owner:artur.bereta,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
+export VERSION="4.4_openshift"
+export IKS_CLUSTER_FLAVOR=b3c.4x16.encrypted  
+#u3c.2x4
+export IKS_CLUSTER_TAG_NAMES="owner:artur.obrzut,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
 rm -f once.txt
 if [ -z "$1" ]
 then
@@ -25,13 +26,13 @@ else
   export CN=`cat ./clustername.txt`
 fi
   
-ibmcloud ks cluster ls |grep $CN
+ibmcloud oc cluster ls |grep $CN
 if [[ $? -eq 0 ]]
 then
    echo "Cluster exists"
 else
    echo "Start creating cluster $CN"
-   ibmcloud oc cluster create classic --name $CN --flavor $IKS_CLUSTER_FLAVOR --hardware shared --workers 1 --zone $IKS_CLUSTER_ZONE --public-vlan $IKS_CLUSTER_PUBLIC_VLAN --private-vlan $IKS_CLUSTER_PRIVATE_VLAN   --public-service-endpoint  --version 4.4_openshift 
+   ibmcloud oc cluster create classic --name $CN --flavor $IKS_CLUSTER_FLAVOR --hardware shared --workers 3 --zone $IKS_CLUSTER_ZONE --public-vlan $IKS_CLUSTER_PUBLIC_VLAN --private-vlan $IKS_CLUSTER_PRIVATE_VLAN  --version $VERSION  --public-service-endpoint
    sleep 10
    
    ibmcloud oc cluster ls | grep $CN | grep normal 
