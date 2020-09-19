@@ -60,6 +60,8 @@ while [ $? -eq 0 ] ; do
     then
         echo "Delete namespace ibm-common-services"
 	kubectl delete namespace ibm-common-services
+	kubectl delete namespace olm
+        kubectl delete namespace marketplace
     fi	   
     kubectl get namespace |grep ibm-common-services
 done  
