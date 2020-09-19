@@ -87,6 +87,8 @@ jobs:
       run: |
         kubectl delete OperatorSource opencloud-operators  -n openshift-marketplace
         kubectl delete namespace ibm-common-services
+        kubectl delete IBMLicensing
+        kubectl delete IBMLicenseReporter
 
         
         
