@@ -62,7 +62,7 @@ while [ $? -eq 0 ] ; do
     if [[ $i -gt 10 ]]
     then
         echo "Delete namespace ibm-common-services"
-	kubectl delete namespace ibm-common-services
+	./cleanup.sh
     fi	   
     kubectl get namespace |grep ibm-common-services
 done  
