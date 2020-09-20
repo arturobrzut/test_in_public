@@ -77,7 +77,13 @@ jobs:
     - name: Run BATS tests
       run:  |
         ./start_bats.sh
-            
+        
+    - name: Archive logs
+      uses: actions/upload-artifact@v2
+      with:
+        name: BATS results
+        path: ./bats_logs.txt
+
     - name: Clean
       if: always()
       run: |
