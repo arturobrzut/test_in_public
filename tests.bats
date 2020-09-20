@@ -14,7 +14,11 @@ DETIK_CLIENT_NAMESPACE="ibm-common-services"
 
 
 @test "verify the deployment" {
-    run verify "there is 1 pod named 'ibm-licensing-operator-'"
+    run verify "there is 1 pod named 'ibm-licensing-operator'"
+    [ "$status" -eq 0 ]
+    run verify "there is 1 pod named 'ibm-licensing-service-instance'"
+    [ "$status" -eq 0 ]
+    run verify "there is 1 pod named 'ibm-licwdsdewwsing-service-instance'"
     [ "$status" -eq 0 ]
 }
 
