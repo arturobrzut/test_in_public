@@ -57,7 +57,7 @@ jobs:
       run: |
         echo  ${{ github.event.inputs.iks_name }}
         chmod 755 ./start_iks.sh
-        /bin/bash ./start_iks.sh ${{ github.event.inputs.iks_name }}
+        /bin/bash ./start_iks.sh ${{ github.event.inputs.iks_name }} openshift-marketplace
 
     # Deploy the  to the IKS cluster
     - name: Deploy to IKS
@@ -85,7 +85,7 @@ jobs:
     - name: Clean
       if: always()
       run: |
-        ./cleanup.sh
+        ./cleanup.sh openshift-marketplace
 
         
         
