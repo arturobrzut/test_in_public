@@ -6,13 +6,13 @@
 # 2. Setup secrets in your repository by going to settings: Create ICR_NAMESPACE and IBM_CLOUD_API_KEY
 # 3. Change the values for the IBM_CLOUD_REGION, REGISTRY_HOSTNAME, IMAGE_NAME, IKS_CLUSTER, DEPLOYMENT_NAME, and PORT
 
-name: Build and Deploy to IKS
+name: Build and Deploy on OCP
 
 on:
   workflow_dispatch:
     inputs:
       iks_name:
-        description: 'iks cluster name'
+        description: 'ocp cluster name'
         required: false
   pull_request:
 
@@ -28,7 +28,12 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     steps:
-
+      
+    - name: Setup BATS
+      uses: mig4/setup-bats@master
+      with:
+        bats-version: 1.1.0
+        
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -40,6 +45,7 @@ jobs:
       run: |
         chmod 755 ./cleanup.sh
         chmod 755 ./start_iks.sh
+        chmod 755 ./start_bats.sh
         echo  ${{ github.event.inputs.iks_name }}
         curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
         ibmcloud --version
@@ -67,6 +73,11 @@ jobs:
       run: |
         kubectl get pods -n ibm-common-services
         
+        
+    - name: Run BATS tests
+      run:  |
+        ./start_bats.sh
+            
     - name: Clean
       if: always()
       run: |
