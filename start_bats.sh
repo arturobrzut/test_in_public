@@ -5,5 +5,5 @@ wget https://raw.githubusercontent.com/bats-core/bats-detik/master/lib/linter.ba
 wget https://raw.githubusercontent.com/bats-core/bats-detik/master/lib/utils.bash
 chmod +x *.bash
 cd ..
-chmod +x *.bash
+chmod +x *.bats
 bats ./tests.bats
