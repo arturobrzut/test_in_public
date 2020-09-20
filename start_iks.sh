@@ -7,11 +7,12 @@ export IKS_CLUSTER_PRIVATE_VLAN=2918270
 export IKS_CLUSTER_PUBLIC_VLAN=2918268
 export VERSION="4.3_openshift"
 export IKS_CLUSTER_FLAVOR=b3c.4x16.encrypted  
-export olm_namespace=$2
+export olm_namespace=$1
+export clustername=$2
 #u3c.2x4
 export IKS_CLUSTER_TAG_NAMES="owner:artur.obrzut,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
 rm -f once.txt
-if [ -z "$1" ]
+if [ -z "$clustername" ]
 then
    echo "try to find cluster $CNAME"
    ibmcloud oc cluster ls |grep $CNAME  | grep -m1 normal > once.txt
