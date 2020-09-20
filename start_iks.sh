@@ -7,6 +7,7 @@ export IKS_CLUSTER_PRIVATE_VLAN=2918270
 export IKS_CLUSTER_PUBLIC_VLAN=2918268
 export VERSION="4.3_openshift"
 export IKS_CLUSTER_FLAVOR=b3c.4x16.encrypted  
+export olm_namespace=$2
 #u3c.2x4
 export IKS_CLUSTER_TAG_NAMES="owner:artur.obrzut,team:CP4MCM,Usage:temp,Usage_desc:'Certification tests',Review_freq:month"
 rm -f once.txt
@@ -62,7 +63,7 @@ while [ $? -eq 0 ] ; do
     if [[ $i -gt 10 ]]
     then
         echo "Delete namespace ibm-common-services"
-	./cleanup.sh
+	./cleanup.sh $olm_namespace
     fi	   
     kubectl get namespace |grep ibm-common-services
 done  
