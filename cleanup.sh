@@ -17,7 +17,7 @@
 
 kubectl delete IBMLicensing --all
 kubectl delete IBMLicenseServiceReporters --all
-kubectl delete IBMLicenseServiceReporters -n $1
+kubectl delete IBMLicenseServiceReporters --all -n $1
 kubectl delete namespace ibm-common-services
 kubectl delete crd ibmlicensings.operator.ibm.com
 kubectl delete crd ibmlicenseservicereporters.operator.ibm.com
