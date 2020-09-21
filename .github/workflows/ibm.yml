@@ -76,48 +76,11 @@ jobs:
       run: |
         cd ./ibm-licensing-operator/
         ./operator-sdk run --watch-namespace ibm-common-services --local 2>&1 | tee ./operator_logs.txt &
-        
-        
-        
-    # Download and Install IBM Cloud CLI
-    - name: Install IBM Cloud CLI
-      run: |
-        exit 1
-        chmod 755 ./cleanup.sh
-        chmod 755 ./start_iks.sh
-        chmod 755 ./start_bats.sh
-        echo  ${{ github.event.inputs.iks_name }}
-        curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
-        ibmcloud --version
-        ibmcloud config --check-version=false
-        ibmcloud plugin install -f kubernetes-service
-        ibmcloud plugin install -f container-registry
-        echo $IKS_CLUSTER$RANDOM > ./clustername.txt
-
-    # Authenticate with IBM Cloud CLI
-    - name: Authenticate with IBM Cloud CLI
-      run: |
-        ibmcloud login --apikey "${IBM_CLOUD_API_KEY}" -r "${IBM_CLOUD_REGION}" -g Default
-        ibmcloud cr region-set "${IBM_CLOUD_REGION}"
-        ibmcloud cr login
-
-    - name: Create K8s
-      run: |
-        /bin/bash ./start_iks.sh openshift-marketplace ${{ github.event.inputs.iks_name }} 
-
-    - name: Install License Service
-      run:  |
-        ./ibm-licensing-operator/common/scripts/ibm_licensing_operator_install.sh --olm_global_catalog_namespace openshift-marketplace
-        
-    - name: Configure License Service
-      run: |
+        sleep 30
         kubectl get pods -n ibm-common-services
         
         
-    - name: Run BATS tests
-      run:  |
-        ./start_bats.sh
-        
+      
     - name: Archive logs
       uses: actions/upload-artifact@v2
       with:
