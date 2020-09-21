@@ -17,11 +17,14 @@
 echo "Start tests"
 echo "List all POD in cluster"
 kubectl get pods --all-namespaces
+echo "----------------"
+echo " "
+
 echo "Wait 10s for checking pod in ibm-common-services. List should be empty"
 sleep 10
 echo "Pod list:"
 kubectl get pods -n ibm-common-services
-results = "$(kubectl get pods -n ibm-common-services | wc -l)"
+results= "$(kubectl get pods -n ibm-common-services | wc -l)"
 if results -ne "0"
 then
   echo "wrong pod ibm-licensing-service-instance"
@@ -29,6 +32,8 @@ then
 fi
 echo "Pod list empty: OK"
 echo "----------------"
+echo " "
+
 echo "Load CR for LS"
 cat <<EOF | kubectl apply -f -
   apiVersion: operator.ibm.com/v1alpha1
@@ -45,7 +50,7 @@ echo "Wait 120s for checking pod in ibm-common-services. List should be one POD"
 sleep 120
 echo "Pod list:"
 kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance
-results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
+results= "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
 export results
 if results -ne "1"
 then
@@ -55,7 +60,7 @@ then
 fi
 echo "Pod list 1 record: OK"
 echo "Check Pod status"
-results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep '1/1')"
+results= "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep '1/1')"
 export results
 if results -ne "1"
 then
@@ -65,13 +70,15 @@ then
 fi
 echo "Pod status Running: OK"
 echo "----------------"
+echo " "
+
 echo "Remove CR from IBMLicensing"
 kubectl delete IBMLicensing --all
 echo "Wait 120s for checking pod in ibm-common-services. List should be empty"
 sleep 120
 echo "POD list: "
-ubectl get pods -n ibm-common-services
-results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
+kubectl get pods -n ibm-common-services
+results= "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
 export results
 if results -ne "0"
 then
