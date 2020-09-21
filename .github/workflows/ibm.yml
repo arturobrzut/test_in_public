@@ -88,6 +88,10 @@ jobs:
    
     - name: Test Operator
       run: |
+        kubectl create namespace ibm-common-services
+        cd ./ibm-licensing-operator/
+        ./operator-sdk run --watch-namespace ibm-common-services --local &
+        cd ..
         chmod 755 ./tests.sh
         ./tests.sh 2>&1 | tee ./operator_logs.txt &
        
