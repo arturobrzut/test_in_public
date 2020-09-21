@@ -10,7 +10,9 @@ name: Operator on CRC tests
 
 on:
   workflow_dispatch:
-
+env:
+  CRC: ${{ secrets.CRC }}
+  
 jobs:
   crc_test:
     name: deploy operator tests
@@ -38,7 +40,9 @@ jobs:
         
         chmod +x ./operator-sdk
         ls
-        cd crc-linux-amd64        
+        cd crc-linux-1.16.0-amd64
+        ./crc setup
+        ./crc start -p $CRC       
         
         
         
