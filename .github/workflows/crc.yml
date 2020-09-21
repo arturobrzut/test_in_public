@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup-test on crc:
+  crc_test:
     name: deploy operator tests
     runs-on: ubuntu-latest
     steps:
