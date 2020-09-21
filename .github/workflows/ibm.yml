@@ -86,11 +86,6 @@ jobs:
    
     - name: Test Operator
       run: |
-        kubectl create namespace ibm-common-services
-        cd ./ibm-licensing-operator/
-        curl -Lo ./operator-sdk "https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu"
-        ./operator-sdk run --watch-namespace ibm-common-services --local &
-        cd ..
         chmod 755 ./tests.sh
         ./tests.sh 2>&1 | tee ./operator_logs.txt &
        
