@@ -16,7 +16,6 @@
 #
 cd ./ibm-licensing-operator/
 
-make build
 curl -Lo ./operator-sdk "https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu"
 curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
 chmod +x ./operator-sdk
@@ -30,7 +29,9 @@ kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
 kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
 kubectl apply -f ./deploy/role.yaml
 kubectl apply -f ./deploy/role_binding.yaml 
-
+kubectl get pods --all-namespaces
+make build
+kubectl get pods --all-namespaces
 kubectl get pods --all-namespaces
 
 ./operator-sdk run --watch-namespace ibm-common-services --local &
