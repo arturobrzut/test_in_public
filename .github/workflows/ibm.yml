@@ -76,7 +76,7 @@ jobs:
       run: |
         cd ./ibm-licensing-operator/
         ./operator-sdk run --watch-namespace ibm-common-services --local 2>&1 | tee ./operator_logs.txt &
-        sleep 30
+        sleep 150
         kubectl get pods -n ibm-common-services
         
         
@@ -87,13 +87,6 @@ jobs:
         name: operator results
         path: ./ibm-licensing-operator/operator_logs.txt
 
-    - name: Clean
-      if: always()
-      run: |
-        ./cleanup.sh openshift-marketplace
-
-        
-        
 
 
         
