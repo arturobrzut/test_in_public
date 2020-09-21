@@ -38,10 +38,8 @@ jobs:
         curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
         chmod +x ./operator-sdk
         chmod +x ./kind
-        cp ./operator-sdk /home/runner/go/bin/
-        cp ./kind /home/runner/go/bin/
-        kind create cluster --image kindest/node:v1.17.2
-        kind get clusters
+        ./kind create cluster --image kindest/node:v1.17.2
+        ./kind get clusters
         kubectl config get-contexts
         kubectl config set-context kind-kind 
         kubectl get pods --all-namespaces
@@ -60,7 +58,7 @@ jobs:
       run: |
         cp ./.osdk-scorecard.yaml ./ibm-licensing-operator/
         cd ./ibm-licensing-operator/
-        operator-sdk scorecard namespace ibm-common-services --verbose 2>&1 | tee ./scorecard_logs.txt 
+        ./operator-sdk scorecard namespace ibm-common-services --verbose 2>&1 | tee ./scorecard_logs.txt 
       
     - name: Archive scorecard logs
       uses: actions/upload-artifact@v2
@@ -90,6 +88,7 @@ jobs:
       run: |
         kubectl create namespace ibm-common-services
         cd ./ibm-licensing-operator/
+        curl -Lo ./operator-sdk "https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu"
         ./operator-sdk run --watch-namespace ibm-common-services --local &
         cd ..
         chmod 755 ./tests.sh
