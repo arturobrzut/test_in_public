@@ -24,8 +24,10 @@ kubectl apply -f ./deploy/role.yaml
 kubectl apply -f ./deploy/role_binding.yaml 
 
 operator-sdk run --watch-namespace ibm-common-services --local &
-sleep 60
+sleep 120
+echo 1
 kubectl get pods -n ibm-common-services
+echo 2
 results = "$(kubectl get pods -n ibm-common-services | wc -l)"
 if results -ne "0"
 then
@@ -33,7 +35,7 @@ then
   kubectl get pods -n ibm-common-services 
   ecit 1
 fi
-
+echo 3
 cat <<EOF | kubectl apply -f -
   apiVersion: operator.ibm.com/v1alpha1
   kind: IBMLicensing
