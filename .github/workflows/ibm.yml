@@ -58,6 +58,7 @@ jobs:
       
     - name: Archive scorecard logs
       uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: scorecard results
         path: ./ibm-licensing-operator/*.txt
@@ -90,14 +91,6 @@ jobs:
         chmod +x ./kind
         ./kind create cluster --image kindest/node:v1.17.2 --name tests        
         kubectl config set-context kind-tests        
-        kubectl create namespace ibm-common-services
-        cd ./ibm-licensing-operator/
-        make build
-        kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
-        kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
-        kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
-        kubectl apply -f ./deploy/role.yaml
-        kubectl apply -f ./deploy/role_binding.yaml 
         
     - name: Test Operator
       run: |
@@ -108,6 +101,7 @@ jobs:
        
     - name: Archive logs
       uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: operator results
         path: ./*.txt
