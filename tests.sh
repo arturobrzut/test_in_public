@@ -14,21 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-echo 1
+echo "Start tests"
+echo "List all POD in cluster"
 kubectl get pods --all-namespaces
-echo 2
-sleep 60
-echo 3
+echo "Wait 10s for checking pod in ibm-common-services. List should be empty"
+sleep 10
+echo "Pod list:"
 kubectl get pods -n ibm-common-services
-echo 4
 results = "$(kubectl get pods -n ibm-common-services | wc -l)"
 if results -ne "0"
 then
   echo "wrong pod ibm-licensing-service-instance"
   kubectl get pods -n ibm-common-services 
-  exit 1
 fi
-echo 5
+echo "Pod list empty: OK"
+echo "----------------"
+echo "Load CR for LS"
 cat <<EOF | kubectl apply -f -
   apiVersion: operator.ibm.com/v1alpha1
   kind: IBMLicensing
@@ -40,7 +41,10 @@ cat <<EOF | kubectl apply -f -
     httpsEnable: true
     instanceNamespace: ibm-common-services
 EOF
+echo "Wait 120s for checking pod in ibm-common-services. List should be one POD"
 sleep 120
+echo "Pod list:"
+kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance
 results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
 if results -ne "1"
 then
@@ -48,6 +52,8 @@ then
   kubectl get pods -n ibm-common-services 
   exit 1
 fi
+echo "Pod list 1 record: OK"
+echo "Check Pod status"
 results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep '1/1')"
 if results -ne "1"
 then
@@ -55,9 +61,14 @@ then
   kubectl get pods -n ibm-common-services 
   exit 1
 fi
+echo "Pod status Running: OK"
+echo "----------------"
+echo "Remove CR from IBMLicensing"
 kubectl delete IBMLicensing --all
-
+echo "Wait 120s for checking pod in ibm-common-services. List should be empty"
 sleep 120
+echo "POD list: "
+ubectl get pods -n ibm-common-services
 results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
 if results -ne "0"
 then
@@ -65,3 +76,5 @@ then
   kubectl get pods -n ibm-common-services 
   exit 1
 fi
+echo "Pod list empty: OK"
+echo "----------------"
