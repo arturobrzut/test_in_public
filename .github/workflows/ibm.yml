@@ -103,7 +103,6 @@ jobs:
       run: |
         chmod +x ./tests.sh
         cd ./ibm-licensing-operator/
-        ./../operator-sdk run --watch-namespace ibm-common-services --local 2>&1  | tee ./../operator_logs.txt &
         ./../tests.sh 2>&1 | tee ./../test_logs.txt 
        
     - name: Archive logs
