@@ -15,6 +15,9 @@
 # limitations under the License.
 #
 echo "Start tests"
+
+./../operator-sdk run --watch-namespace ibm-common-services --local 2>&1  | tee ./../operator_logs.txt &
+
 echo "List all POD in cluster"
 kubectl get pods --all-namespaces
 echo "----------------"
