@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+cd ./ibm-licensing-operator/
 kubectl delete namespace ibm-common-services
 kubectl create namespace ibm-common-services
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
