@@ -32,6 +32,8 @@ echo 51
 ls -lrt
 echo 52
 ./kind -h
+echo 53
+./kind create cluster
 echo 6
 ./kind get clusters
 echo 61
