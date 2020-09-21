@@ -96,7 +96,7 @@ jobs:
       run: |
         chmod +x ./tests.sh
         cd ./ibm-licensing-operator/
-        ./../tests.sh > ./../test_logs.txt 
+        ./../tests.sh  2>&1 ./../test_logs.txt 
 #        2>&1 | tee ./../test_logs.txt 
        
     - name: Archive logs
