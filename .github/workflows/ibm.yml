@@ -90,10 +90,20 @@ jobs:
         chmod +x ./kind
         ./kind create cluster --image kindest/node:v1.17.2 --name tests        
         kubectl config set-context kind-tests        
-
+        kubectl create namespace ibm-common-services
+        cd ./ibm-licensing-operator/
+        make build
+        kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
+        kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
+        kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
+        kubectl apply -f ./deploy/role.yaml
+        kubectl apply -f ./deploy/role_binding.yaml 
+        
     - name: Test Operator
       run: |
         chmod +x ./tests.sh
+        cd ./ibm-licensing-operator/
+        ./../operator-sdk run --watch-namespace ibm-common-services --local &
         ./tests.sh 2>&1 | tee ./operator_logs.txt &
        
     - name: Archive logs
