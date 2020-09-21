@@ -92,8 +92,8 @@ jobs:
         EOF
         sleep 120
         kubectl get pods -n ibm-common-services
-        kubectl get pods -n ibm-common-services | grep ibm-licensing-operator | wc -l
-        kubectl get pods -n ibm-common-services | grep ibm-licensing-operator |grep Running |grep "1/1"
+        kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l
+        kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep "1/1"
     
       
     - name: Archive logs
