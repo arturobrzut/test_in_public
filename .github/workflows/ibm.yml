@@ -76,7 +76,7 @@ jobs:
       run: |
         cp ./.osdk-scorecard.yaml ./ibm-licensing-operator/
         cd ./ibm-licensing-operator/
-        ./operator-sdk scorecard namespace ibm-common-services --verbose 2>&1 | tee ./scorecard_logs.txt &
+        ./operator-sdk scorecard namespace ibm-common-services --verbose 2>&1 | tee ./scorecard_logs.txt 
         
     - name: Run Operator
       run: |
