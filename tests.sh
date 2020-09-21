@@ -14,36 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-echo 1
 cd ./ibm-licensing-operator/
-echo 2
-wget https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu
-echo 3
-wget https://github.com/kubernetes-sigs/kind/releases/download/v0.9.0/kind-linux-amd64
-echo 4
-mv ./kind-linux-amd64 ./kind
-echo 41
-mv ./operator-sdk-v0.17.0-x86_64-linux-gnu ./operator-sdk
-echo 42
-chmod +x ./operator-sdk
-echo 5
-chmod +x ./kind
-echo 51
-ls -lrt
-echo 52
-./kind -h
-echo 53
-./kind create cluster
-echo 6
-./kind get clusters
-echo 61
-./kind create cluster --image kindest/node:v1.17.2 --name tests
-echo 7
-./kind get clusters
-echo 71
-./kind get clusters
-echo 8
-kubectl config set-context kind-tests
 kubectl create namespace ibm-common-services
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
@@ -55,7 +26,7 @@ make build
 kubectl get pods --all-namespaces
 kubectl get pods --all-namespaces
 
-./operator-sdk run --watch-namespace ibm-common-services --local &
+./../operator-sdk run --watch-namespace ibm-common-services --local &
 sleep 60
 kubectl get pods -n ibm-common-services
 results = "$(kubectl get pods -n ibm-common-services | wc -l)"
