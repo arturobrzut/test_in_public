@@ -28,6 +28,10 @@ echo 42
 chmod +x ./operator-sdk
 echo 5
 chmod +x ./kind
+echo 51
+ls -lrt
+echo 52
+./kind -h
 echo 6
 ./kind get clusters
 echo 61
