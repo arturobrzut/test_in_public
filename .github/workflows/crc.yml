@@ -42,7 +42,7 @@ jobs:
         ls
         cd crc-linux-1.16.0-amd64
         ./crc setup
-        ./crc start -p $CRC       
+        ./crc start -p ${CRC}
         
         
         
