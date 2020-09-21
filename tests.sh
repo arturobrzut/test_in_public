@@ -16,7 +16,8 @@
 #
 echo "Start tests"
 
-./../operator-sdk run --watch-namespace ibm-common-services --local 2>&1  | tee ./../operator_logs.txt &
+# ./../operator-sdk run --watch-namespace ibm-common-services --local 2>&1  | tee ./../operator_logs.txt &
+./../operator-sdk run --watch-namespace ibm-common-services --local &
 
 echo "List all POD in cluster"
 kubectl get pods --all-namespaces
