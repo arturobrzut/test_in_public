@@ -56,10 +56,11 @@ jobs:
         chmod +x ./operator-sdk
         chmod +x ./kind
         ./operator-sdk -h
-        ./kind create cluster
+        ./kind create cluster --image kindest/node:v1.17.2
         ./kind get clusters
         kubectl config get-contexts
         kubectl config set-context kind-kind 
+        kubectl get pods --all-namespaces
         cd ..     
 
     # Download and Install IBM Cloud CLI
