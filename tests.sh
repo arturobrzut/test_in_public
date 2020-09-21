@@ -14,19 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-cd ./ibm-licensing-operator/
-kubectl create namespace ibm-common-services
-kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
-kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
-kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
-kubectl apply -f ./deploy/role.yaml
-kubectl apply -f ./deploy/role_binding.yaml 
 kubectl get pods --all-namespaces
-make build
-kubectl get pods --all-namespaces
-kubectl get pods --all-namespaces
-
-./../operator-sdk run --watch-namespace ibm-common-services --local &
 sleep 60
 kubectl get pods -n ibm-common-services
 results = "$(kubectl get pods -n ibm-common-services | wc -l)"
