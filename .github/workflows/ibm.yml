@@ -10,7 +10,7 @@ name: Operator tests
 
 on:
   workflow_dispatch:
-  pull_request:
+#  pull_request:
 
 jobs:
   scorecard:
