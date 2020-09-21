@@ -46,6 +46,7 @@ sleep 120
 echo "Pod list:"
 kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance
 results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
+export results
 if results -ne "1"
 then
   echo "wrong pod ibm-licensing-service-instance"
@@ -55,6 +56,7 @@ fi
 echo "Pod list 1 record: OK"
 echo "Check Pod status"
 results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep '1/1')"
+export results
 if results -ne "1"
 then
   echo "wrong pod ibm-licensing-service-instance"
@@ -70,6 +72,7 @@ sleep 120
 echo "POD list: "
 ubectl get pods -n ibm-common-services
 results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
+export results
 if results -ne "0"
 then
   echo "wrong pod ibm-licensing-service-instance"
