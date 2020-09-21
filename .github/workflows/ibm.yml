@@ -77,7 +77,8 @@ jobs:
       run: |
         cd ./ibm-licensing-operator/
         ls -l
-        ./operator-sdk run --watch-namespace ibm-common-services --local
+         2>&1 | tee ./bats_logs.txt
+        ./operator-sdk run --watch-namespace ibm-common-services --local 2>&1 | tee ./operator_logs.txt &
         
         
         
@@ -123,8 +124,8 @@ jobs:
     - name: Archive logs
       uses: actions/upload-artifact@v2
       with:
-        name: BATS results
-        path: ./bats_logs.txt
+        name: operator results
+        path: ./ibm-licensing-operator/operator_logs.txt
 
     - name: Clean
       if: always()
