@@ -14,9 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+echo 1
 kubectl get pods --all-namespaces
+echo 2
 sleep 60
+echo 3
 kubectl get pods -n ibm-common-services
+echo 4
 results = "$(kubectl get pods -n ibm-common-services | wc -l)"
 if results -ne "0"
 then
@@ -24,7 +28,7 @@ then
   kubectl get pods -n ibm-common-services 
   exit 1
 fi
-echo 3
+echo 5
 cat <<EOF | kubectl apply -f -
   apiVersion: operator.ibm.com/v1alpha1
   kind: IBMLicensing
