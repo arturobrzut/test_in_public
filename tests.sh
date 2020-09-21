@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 echo "Start tests"
-cd ./ibm-licensing-operator/
 
 echo "Create namespace ibm-common-services"
 kubectl create namespace ibm-common-services
