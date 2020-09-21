@@ -79,38 +79,22 @@ jobs:
 
     - name: Download LS repository
       run: git clone https://github.com/IBM/ibm-licensing-operator.git
-   
+
+    - name: Download binaries
+      run: |
+        wget https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu
+        wget https://github.com/kubernetes-sigs/kind/releases/download/v0.9.0/kind-linux-amd64
+        mv ./kind-linux-amd64 ./kind
+        mv ./operator-sdk-v0.17.0-x86_64-linux-gnu ./operator-sdk
+        chmod +x ./operator-sdk
+        chmod +x ./kind
+        ./kind create cluster --image kindest/node:v1.17.2 --name tests        
+        kubectl config set-context kind-tests        
+
     - name: Test Operator
       run: |
-        echo 1
-        cd ./ibm-licensing-operator/
-        echo 2
-        wget https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu
-        echo 3
-        wget https://github.com/kubernetes-sigs/kind/releases/download/v0.9.0/kind-linux-amd64
-        echo 4
-        mv ./kind-linux-amd64 ./kind
-        echo 41
-        mv ./operator-sdk-v0.17.0-x86_64-linux-gnu ./operator-sdk
-        echo 42
-        chmod +x ./operator-sdk
-        echo 5
-        chmod +x ./kind
-        echo 51
-        ls -lrt
-        echo 52
-        ./kind -h
-        echo 53
-        ./kind create cluster
-        echo 6
-        ./kind get clusters
-        echo 61
-        ./kind create cluster --image kindest/node:v1.17.2 --name tests        
-        chmod 755 ./tests.sh
         ./tests.sh 2>&1 | tee ./operator_logs.txt &
        
-    
-      
     - name: Archive logs
       uses: actions/upload-artifact@v2
       with:
