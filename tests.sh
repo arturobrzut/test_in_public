@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 cd ./ibm-licensing-operator/
-kubectl delete namespace ibm-common-services
 kubectl create namespace ibm-common-services
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
@@ -23,7 +22,7 @@ kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
 kubectl apply -f ./deploy/role.yaml
 kubectl apply -f ./deploy/role_binding.yaml 
 
-operator-sdk run --watch-namespace ibm-common-services --local &
+./../operator-sdk run --watch-namespace ibm-common-services --local &
 sleep 120
 echo 1
 kubectl get pods -n ibm-common-services
