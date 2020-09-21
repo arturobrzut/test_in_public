@@ -6,23 +6,11 @@
 # 2. Setup secrets in your repository by going to settings: Create ICR_NAMESPACE and IBM_CLOUD_API_KEY
 # 3. Change the values for the IBM_CLOUD_REGION, REGISTRY_HOSTNAME, IMAGE_NAME, IKS_CLUSTER, DEPLOYMENT_NAME, and PORT
 
-name: Build and Deploy on OCP
+name: Operator tests
 
 on:
   workflow_dispatch:
-    inputs:
-      iks_name:
-        description: 'ocp cluster name'
-        required: false
   pull_request:
-
-# Environment variables available to all jobs and steps in this workflow
-env:
-  GITHUB_SHA: ${{ github.sha }}
-  IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
-  IBM_CLOUD_REGION: eu-de
-  IKS_CLUSTER: license-service
-
 
 jobs:
   scorecard:
@@ -50,9 +38,10 @@ jobs:
         curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
         chmod +x ./operator-sdk
         chmod +x ./kind
-        ./operator-sdk -h
-        ./kind create cluster --image kindest/node:v1.17.2
-        ./kind get clusters
+        cp ./operator-sdk /home/runner/go/bin/
+        cp ./kind /home/runner/go/bin/
+        kind create cluster --image kindest/node:v1.17.2
+        kind get clusters
         kubectl config get-contexts
         kubectl config set-context kind-kind 
         kubectl get pods --all-namespaces
@@ -71,7 +60,7 @@ jobs:
       run: |
         cp ./.osdk-scorecard.yaml ./ibm-licensing-operator/
         cd ./ibm-licensing-operator/
-        ./operator-sdk scorecard namespace ibm-common-services --verbose 2>&1 | tee ./scorecard_logs.txt 
+        operator-sdk scorecard namespace ibm-common-services --verbose 2>&1 | tee ./scorecard_logs.txt 
       
     - name: Archive scorecard logs
       uses: actions/upload-artifact@v2
@@ -81,7 +70,7 @@ jobs:
     
      
   setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+    name: deploy operator tests
     runs-on: ubuntu-latest
     steps:
 
@@ -91,11 +80,6 @@ jobs:
         go-version: ^1.14
       id: go
 
-    - name: Setup BATS
-      uses: mig4/setup-bats@v1
-      with:
-        bats-version: 1.1.0
-        
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -130,7 +114,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: operator results
-        path: ./ibm-licensing-operator/*.txt
+        path: ./*.txt
 
 
 
