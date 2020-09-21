@@ -23,12 +23,19 @@ env:
   IBM_CLOUD_REGION: eu-de
   IKS_CLUSTER: license-service
 
+
 jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     steps:
-      
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.13
+      id: go
+
     - name: Setup BATS
       uses: mig4/setup-bats@v1
       with:
@@ -39,7 +46,16 @@ jobs:
 
     - name: Download LS repository
       run: git clone https://github.com/IBM/ibm-licensing-operator.git
-      
+
+    - name: Build
+      run: |
+        cd ./ibm-licensing-operator/
+        make build
+        wget https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu
+        chmod 755 operator-sdk-v0.17.0-x86_64-linux-gnu
+        operator-sdk-v0.17.0-x86_64-linux-gnu -h
+        cd ..     
+
     # Download and Install IBM Cloud CLI
     - name: Install IBM Cloud CLI
       run: |
