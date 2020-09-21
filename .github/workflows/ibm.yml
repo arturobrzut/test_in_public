@@ -102,9 +102,12 @@ jobs:
     - name: Test Operator
       run: |
         chmod +x ./tests.sh
+        echo A
         cd ./ibm-licensing-operator/
-        ./../operator-sdk run --watch-namespace ibm-common-services --local &
-        ./../tests.sh 2>&1 | tee ./../operator_logs.txt &
+        echo B
+        ./../operator-sdk run --watch-namespace ibm-common-services --local > ./../operator_logs.txt &
+        echo C
+        ./../tests.sh 2>&1 | tee ./../test_logs.txt 
        
     - name: Archive logs
       uses: actions/upload-artifact@v2
