@@ -110,69 +110,19 @@ jobs:
         curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
         chmod +x ./operator-sdk
         chmod +x ./kind
+        echo $PATH
+        cp ./operator-sdk /usr/bin
         ./operator-sdk -h
         ./kind create cluster --image kindest/node:v1.17.2
         ./kind get clusters
         kubectl config get-contexts
         kubectl config set-context kind-kind 
-        kubectl get pods --all-namespaces
    
-    - name: Deploy Operators YAML
+    - name: Test Operator
       run: |
-        cd ./ibm-licensing-operator/
-        kubectl create namespace ibm-common-services
-        kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
-        kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
-        kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
-        kubectl apply -f ./deploy/role.yaml
-        kubectl apply -f ./deploy/role_binding.yaml 
-
-    - name: Run Operator
-      run: |
-        cd ./ibm-licensing-operator/
-        ./operator-sdk run --watch-namespace ibm-common-services --local 2>&1 | tee ./operator_logs.txt &
-        sleep 60
-        kubectl get pods -n ibm-common-services
-        
-        cat <<EOF | kubectl apply -f -
-          apiVersion: operator.ibm.com/v1alpha1
-          kind: IBMLicensing
-          metadata:
-            name: instance
-          spec:
-            apiSecretToken: ibm-licensing-token
-            datasource: datacollector
-            httpsEnable: true
-            instanceNamespace: ibm-common-services
-        EOF
-        sleep 120
-        results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
-        if results -nq "1"
-        then
-          echo "wrong pod ibm-licensing-service-instance"
-          kubectl get pods -n ibm-common-services 
-          ecit 1
-        fi
-
-        results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep '1/1')"
-        if results -nq "1"
-        then
-          echo "wrong pod ibm-licensing-service-instance"
-          kubectl get pods -n ibm-common-services 
-          ecit 1
-        fi
-        kubectl delete IBMLicensing --all
-        
-        sleep 120
-        results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
-        if results -nq "0"
-        then
-          echo "wrong pod ibm-licensing-service-instance"
-          kubectl get pods -n ibm-common-services 
-          ecit 1
-        fi
-        
-        
+        chmod 755 ./tests.sh
+        ./tests.sh 2>&1 | tee ./operator_logs.txt &
+       
     
       
     - name: Archive logs
