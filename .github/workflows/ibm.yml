@@ -111,10 +111,11 @@ jobs:
         chmod +x ./operator-sdk
         chmod +x ./kind
         echo $PATH
-        cp ./operator-sdk /usr/bin
-        ./operator-sdk -h
-        ./kind create cluster --image kindest/node:v1.17.2
-        ./kind get clusters
+        cp ./operator-sdk /home/runner/go/bin/
+        cp ./kind /home/runner/go/bin/
+        operator-sdk -h
+        kind create cluster --image kindest/node:v1.17.2
+        kind get clusters
         kubectl config get-contexts
         kubectl config set-context kind-kind 
    
