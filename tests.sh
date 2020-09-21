@@ -29,10 +29,15 @@ chmod +x ./operator-sdk
 echo 5
 chmod +x ./kind
 echo 6
-./kind create cluster --image kindest/node:v1.17.2
+./kind get clusters
+echo 61
+./kind create cluster --image kindest/node:v1.17.2 --name tests
 echo 7
 ./kind get clusters
-kubectl config set-context kind-kind 
+echo 71
+./kind get clusters
+echo 8
+kubectl config set-context kind-tests
 kubectl create namespace ibm-common-services
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
