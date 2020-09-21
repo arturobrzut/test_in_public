@@ -15,24 +15,30 @@
 # limitations under the License.
 #
 cd ./ibm-licensing-operator/
+
+make build
+curl -Lo ./operator-sdk "https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu"
+curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
+chmod +x ./operator-sdk
+chmod +x ./kind
+kind create cluster --image kindest/node:v1.17.2
+kind get clusters
+kubectl config set-context kind-kind 
 kubectl create namespace ibm-common-services
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
 kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
 kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
 kubectl apply -f ./deploy/role.yaml
 kubectl apply -f ./deploy/role_binding.yaml 
-make build
 ./operator-sdk run --watch-namespace ibm-common-services --local &
-sleep 120
-echo 1
+sleep 60
 kubectl get pods -n ibm-common-services
-echo 2
 results = "$(kubectl get pods -n ibm-common-services | wc -l)"
 if results -ne "0"
 then
   echo "wrong pod ibm-licensing-service-instance"
   kubectl get pods -n ibm-common-services 
-  ecit 1
+  exit 1
 fi
 echo 3
 cat <<EOF | kubectl apply -f -
@@ -52,14 +58,14 @@ if results -ne "1"
 then
   echo "wrong pod ibm-licensing-service-instance"
   kubectl get pods -n ibm-common-services 
-  ecit 1
+  exit 1
 fi
 results = "$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep '1/1')"
 if results -ne "1"
 then
   echo "wrong pod ibm-licensing-service-instance"
   kubectl get pods -n ibm-common-services 
-  ecit 1
+  exit 1
 fi
 kubectl delete IBMLicensing --all
 
@@ -69,5 +75,5 @@ if results -ne "0"
 then
   echo "wrong pod ibm-licensing-service-instance"
   kubectl get pods -n ibm-common-services 
-  ecit 1
+  exit 1
 fi
