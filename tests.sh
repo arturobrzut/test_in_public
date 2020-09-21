@@ -89,3 +89,4 @@ then
 fi
 echo "Pod list empty: OK"
 echo "----------------"
+exit 0
