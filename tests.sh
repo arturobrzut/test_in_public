@@ -15,7 +15,28 @@
 # limitations under the License.
 #
 echo "Start tests"
+cd ./ibm-licensing-operator/
 
+echo "Create namespace ibm-common-services"
+kubectl create namespace ibm-common-services
+echo "----------------"
+echo " "
+
+echo "Build Operator"
+make build
+echo "----------------"
+echo " "
+
+echo "Apply CRD, RBAC"
+kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
+kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicensings_crd.yaml
+kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
+kubectl apply -f ./deploy/role.yaml
+kubectl apply -f ./deploy/role_binding.yaml 
+echo "----------------"
+echo " "
+
+echo "Run operator"
 # ./../operator-sdk run --watch-namespace ibm-common-services --local 2>&1  | tee ./../operator_logs.txt &
 ./../operator-sdk run --watch-namespace ibm-common-services --local &
 
@@ -33,6 +54,7 @@ if [[ $results -ne "0" ]]
 then
   echo "wrong pod ibm-licensing-service-instance"
   kubectl get pods -n ibm-common-services 
+  exit 1
 fi
 echo "Pod list empty: OK"
 echo "----------------"
@@ -51,7 +73,7 @@ cat <<EOF | kubectl apply -f -
     instanceNamespace: ibm-common-services
 EOF
 echo "Wait 120s for checking pod in ibm-common-services. List should be one POD"
-sleep 120
+sleep 180
 echo "Pod list:"
 kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance
 results="$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
