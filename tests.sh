@@ -85,7 +85,7 @@ then
 fi
 echo "Pod list 1 record: OK"
 echo "Check Pod status"
-results="$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep '1/1')"
+results="$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance |grep Running |grep '1/1'| wc -l)"
 if [[ $results -ne "1" ]]
 then
   echo "wrong pod ibm-licensing-service-instance"
