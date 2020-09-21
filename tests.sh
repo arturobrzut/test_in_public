@@ -14,13 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+echo 1
 cd ./ibm-licensing-operator/
-
-curl -Lo ./operator-sdk "https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu"
-curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
+echo 2
+wget https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu
+echo 3
+wget https://github.com/kubernetes-sigs/kind/releases/download/v0.9.0/kind-linux-amd64
+echo 4
+mv ./kind-linux-amd64 ./kind
+echo 41
+mv ./operator-sdk-v0.17.0-x86_64-linux-gnu ./operator-sdk
+echo 42
 chmod +x ./operator-sdk
+echo 5
 chmod +x ./kind
+echo 6
 ./kind create cluster --image kindest/node:v1.17.2
+echo 7
 ./kind get clusters
 kubectl config set-context kind-kind 
 kubectl create namespace ibm-common-services
