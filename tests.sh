@@ -23,7 +23,7 @@ kubectl apply -f ./deploy/service_account.yaml -n ibm-common-services
 kubectl apply -f ./deploy/role.yaml
 kubectl apply -f ./deploy/role_binding.yaml 
 
-operator-sdk run --watch-namespace ibm-common-services --local 
+operator-sdk run --watch-namespace ibm-common-services --local &
 sleep 60
 kubectl get pods -n ibm-common-services
 results = "$(kubectl get pods -n ibm-common-services | wc -l)"
