@@ -106,8 +106,10 @@ jobs:
     - name: Test Operator
       run: |
         chmod +x ./tests.sh
+        export PATH=`pwd`:$PATH
         cd ./ibm-licensing-operator/
         set -o pipefail
+
         bats ./../tests.bats 2>&1 | tee ./../test_logs.txt 
 #        ./../tests.sh  > ./../test_logs.txt 2>&1 
 #        2>&1 | tee ./../test_logs.txt 
