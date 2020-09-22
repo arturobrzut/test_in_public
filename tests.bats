@@ -47,7 +47,7 @@
 }
 
 @test "List all POD in cluster" {
-  results="$(kubectl get pods -n ibm-common-services | wc -l)"
+  results="$(kubectl get pods --all-namespaces | wc -l)"
   [ "$results" -gt 0 ]
 }
 
