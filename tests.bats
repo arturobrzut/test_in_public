@@ -50,7 +50,7 @@ echo "Start tests"
 
 @test "List all POD in cluster" {
   results="$(kubectl get pods -n ibm-common-services | wc -l)"
-  [ "$result" -gt 0 ]
+  [ "$results" -gt 0 ]
 }
 
 
@@ -58,7 +58,7 @@ echo "Start tests"
   sleep 10
   kubectl get pods -n ibm-common-services
   results="$(kubectl get pods -n ibm-common-services | wc -l)"
-  [ "$result" -eq "0" ]
+  [ "$results" -eq "0" ]
 }
 
 
