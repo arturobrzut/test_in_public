@@ -43,7 +43,7 @@
 }
 
 @test "Run Operator in backgroud" {
-  operator-sdk run --watch-namespace ibm-common-services --local > operator-sdk_logs.txt 2>&1 &
+  operator-sdk run --watch-namespace ibm-common-services --local > ./../operator-sdk_logs.txt 2>&1 &
 }
 @test "List all POD in cluster" {
   results="$(kubectl get pods --all-namespaces | wc -l)"
