@@ -15,8 +15,6 @@
 # limitations under the License.
 #
 
-echo "Start tests"
-
 @test "Create namespace ibm-common-services" {
   kubectl create namespace ibm-common-services
   [ "$?" -eq 0 ]
