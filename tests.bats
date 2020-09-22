@@ -76,7 +76,13 @@ EOF
 }
 
 @test "Wait 180s for checking pod in ibm-common-services. List should be one POD" {
-  sleep 180
+
+  sleep 30
+  kubectl get deployments -n ibm-common-services
+  if ! kubectl rollout status --timeout=300s -w deployment/ibm-licensing-service-instance --namespace=ibm-common-services; then
+    [ "Failed" -eq "Deploment not ready" ]
+  fi
+
   kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance
   results="$(kubectl get pods -n ibm-common-services | grep ibm-licensing-service-instance | wc -l)"
   [ $results -eq "1" ]
