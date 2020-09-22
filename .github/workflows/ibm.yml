@@ -110,7 +110,7 @@ jobs:
         cd ./ibm-licensing-operator/
         set -o pipefail
 
-        bats ./../tests.bats 2>&1 | tee ./../test_logs.txt 
+        bats ./../tests.bats  > ./../test_logs.txt 2>&1 
 #        ./../tests.sh  > ./../test_logs.txt 2>&1 
 #        2>&1 | tee ./../test_logs.txt 
        
