@@ -34,6 +34,9 @@ jobs:
         curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
         chmod +x ./operator-sdk
         chmod +x ./kind
+        echo SET PATH
+        echo $PATH
+        export PATH=/aaa:$PATH
         ./kind create cluster --image kindest/node:v1.17.2
         ./kind get clusters
         kubectl config get-contexts
@@ -42,6 +45,9 @@ jobs:
    
     - name: Deploy Operators YAML
       run: |
+        echo PATH AGAIN
+        echo $PATH
+        
         cd ./ibm-licensing-operator/
         kubectl create namespace ibm-common-services
         kubectl apply -f ./deploy/crds/operator.ibm.com_ibmlicenseservicereporters_crd.yaml
@@ -101,7 +107,8 @@ jobs:
       run: |
         chmod +x ./tests.sh
         cd ./ibm-licensing-operator/
-        bats ./../tests.bats > ./../test_logs.txt 2>&1
+        set -o pipefail
+        bats ./../tests.bats 2>&1 | tee ./../test_logs.txt 
 #        ./../tests.sh  > ./../test_logs.txt 2>&1 
 #        2>&1 | tee ./../test_logs.txt 
        
