@@ -35,7 +35,8 @@ jobs:
     - name: Download binaries
       run: |
         docker login ${LOGIN}
-        docker pull registry.redhat.io/openshift4/ose-service-ca-operator 
+        docker pull registry.redhat.io/openshift4/ose-service-ca-operator:latest
+
         curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
         chmod +x ./kind
         ./kind create cluster --image kindest/node:v1.17.2 --name test
@@ -44,12 +45,34 @@ jobs:
         kubectl config set-context kind-test
         kubectl get pods --all-namespaces
         kubectl get nodes
+        sleep 60
+        kubectl get pods --all-namespaces
+        kubectl get nodes
+        
         ./kind load docker-image registry.redhat.io/openshift4/ose-service-ca-operator:latest  --name test
         sleep 60
         kubectl apply -f ./pod.yaml
         sleep 30
         kubectl get pods --all-namespaces
-
+        kubectl get nodes
+        sleep 30
+        kubectl get pods --all-namespaces
+        kubectl get nodes
+        sleep 30
+        kubectl get pods --all-namespaces
+        kubectl get nodes
+        sleep 30
+        kubectl get pods --all-namespaces
+        kubectl get nodes
+        sleep 30
+        kubectl get pods --all-namespaces
+        kubectl get nodes
+        sleep 30
+        kubectl get pods --all-namespaces
+        kubectl get nodes
+        sleep 30
+        kubectl get pods --all-namespaces
+        kubectl get nodes
         
 #    - name: Test Operator
 #      run: |
