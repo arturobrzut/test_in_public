@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: myocp
 spec:
-    containers:
-      - name: web
-        image: registry.redhat.io/openshift4/ose-service-ca-operator
+  containers:
+    - name: web
+      image: registry.redhat.io/openshift4/ose-service-ca-operator
+  imagePullSecrets:
+  - name: regcred
