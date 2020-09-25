@@ -36,7 +36,7 @@ jobs:
     - name: Download binaries
       run: |
         docker login ${LOGIN}
-        docker pull registry.redhat.io/openshift4/ose-service-ca-operator:latest
+        docker pull registry.redhat.io/openshift4/ose-service-ca-operator:v4.3
         ls -lrt  ~/.docker/config.json
         chmod +x ./kind-with-registry.sh
 
