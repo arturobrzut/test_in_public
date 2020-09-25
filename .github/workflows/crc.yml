@@ -44,8 +44,6 @@ jobs:
         chmod +x ./kind
         export PATH=`pwd`:$PATH
         ./kind-with-registry.sh
-        
-        
         ./kind get clusters
         kubectl get pods --all-namespaces
 
@@ -59,42 +57,44 @@ jobs:
 
         kubectl get pods --all-namespaces
         kubectl get nodes
-        gpg --quiet --batch --yes --decrypt --passphrase="$PASSWORD" --output ./a.yaml rh_secret.yaml.gpg
-        kubectl apply -f ./a.yaml
-        
-        ./kind load docker-image registry.redhat.io/openshift4/ose-service-ca-operator:latest  --name test
-        sleep 60
-        kubectl apply -f ./pod.yaml
-        kubectl describe pod myocp
+        kubectl describe pod hello-server
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
-        kubectl describe pod myocp
+        kubectl describe pod hello-server
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
-        kubectl describe pod myocp
+        kubectl describe pod hello-server
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
-        kubectl describe pod myocp
+        kubectl describe pod hello-server
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
-        kubectl describe pod myocp
+        kubectl describe pod hello-server
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
-        kubectl describe pod myocp
+        kubectl describe pod hello-server
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
-        kubectl describe pod myocp
-        sleep 30
-        kubectl get pods --all-namespaces
-        kubectl get nodes
-        kubectl describe pod myocp
+        kubectl describe pod hello-server
+ 
 
+#        kubectl get pods --all-namespaces
+#        kubectl get nodes
+#        gpg --quiet --batch --yes --decrypt --passphrase="$PASSWORD" --output ./a.yaml rh_secret.yaml.gpg
+#        kubectl apply -f ./a.yaml
+        
+#        sleep 60
+#        kubectl apply -f ./pod.yaml
+#        kubectl describe pod myocp
+#        sleep 30
+
+#        ./kind load docker-image registry.redhat.io/openshift4/ose-service-ca-operator:latest  --name test
 
 #       ./kind create cluster --image kindest/node:v1.19.2 --name test
 
