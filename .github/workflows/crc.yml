@@ -43,8 +43,9 @@ jobs:
         kubectl config get-contexts
         kubectl config set-context kind-test
         kubectl get pods --all-namespaces
+        kubectl get nodes
         ./kind load docker-image registry.redhat.io/openshift4/ose-service-ca-operator:latest  --name test
-        sleep 30
+        sleep 60
         kubectl apply -f ./pod.yaml
         sleep 30
         kubectl get pods --all-namespaces
