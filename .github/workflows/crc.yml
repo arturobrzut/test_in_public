@@ -13,7 +13,7 @@ on:
 env:
   CRC: ${{ secrets.CRC }}
   LOGIN: ${{ secrets.LOGIN }}  
-  
+  REGCRED: ${{ secrets.REGCRED }}
 jobs:
   crc_test:
     name: deploy operator tests
@@ -39,6 +39,7 @@ jobs:
         ls -lrt  ~/.docker/config.json
         
         
+        
         curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
         chmod +x ./kind
         ./kind create cluster --image kindest/node:v1.17.2 --name test
@@ -50,8 +51,9 @@ jobs:
         sleep 60
         kubectl get pods --all-namespaces
         kubectl get nodes
-        
-        kubectl create secret generic regcred --from-file=.dockerconfigjson=~/.docker/config.json --type=kubernetes.io/dockerconfigjson
+        echo ${REGCRED} > a.yaml
+        ls -lrt
+        kubectl apply -f ./a.yaml
         
         ./kind load docker-image registry.redhat.io/openshift4/ose-service-ca-operator:latest  --name test
         sleep 60
