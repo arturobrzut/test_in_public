@@ -39,11 +39,9 @@ jobs:
         docker pull registry.redhat.io/openshift4/ose-service-ca-operator:latest
         ls -lrt  ~/.docker/config.json
         
-        
-        
         curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
         chmod +x ./kind
-        ./kind create cluster --image kindest/node:v1.17.2 --name test
+        ./kind create cluster --name test
         ./kind get clusters
         kubectl config get-contexts
         kubectl config set-context kind-test
@@ -87,7 +85,10 @@ jobs:
         kubectl get pods --all-namespaces
         kubectl get nodes
         kubectl describe pod myocp
-        
+
+
+#       ./kind create cluster --image kindest/node:v1.19.2 --name test
+
 #    - name: Test Operator
 #      run: |
 #        chmod +x ./tests.sh
