@@ -35,7 +35,7 @@ jobs:
     - name: Download binaries
       run: |
         docker login ${LOGIN}
-        docker pull docker pull registry.redhat.io/openshift4/ose-service-ca-operator 
+        docker pull registry.redhat.io/openshift4/ose-service-ca-operator 
         
         
         
