@@ -38,16 +38,24 @@ jobs:
         docker login ${LOGIN}
         docker pull registry.redhat.io/openshift4/ose-service-ca-operator:latest
         ls -lrt  ~/.docker/config.json
-        
+        chmod +x ./kind-with-registry.sh
+        ./kind-with-registry.sh
         curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64"
         chmod +x ./kind
-        ./kind create cluster --name test
+        export PATH=`pwd`:$PATH
+        ./kind-with-registry.sh
+        
+        
         ./kind get clusters
-        kubectl config get-contexts
-        kubectl config set-context kind-test
         kubectl get pods --all-namespaces
         kubectl get nodes
         sleep 60
+        docker tag registry.redhat.io/openshift4/ose-service-ca-operator:latest localhost:5000/hello-app:1.0
+        docker push localhost:5000/hello-app:1.0
+        kubectl create deployment hello-server --image=localhost:5000/hello-app:1.0
+        sleep 60
+
+
         kubectl get pods --all-namespaces
         kubectl get nodes
         gpg --quiet --batch --yes --decrypt --passphrase="$PASSWORD" --output ./a.yaml rh_secret.yaml.gpg
