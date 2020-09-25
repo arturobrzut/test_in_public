@@ -48,14 +48,14 @@ jobs:
         
         ./kind get clusters
         kubectl get pods --all-namespaces
-        kubectl get nodes
+
         cat /etc/docker/daemon.json 
         sleep 60
         docker tag registry.redhat.io/openshift4/ose-service-ca-operator:latest localhost:5000/hello-app:1.0
         docker push localhost:5000/hello-app:1.0
         kubectl create deployment hello-server --image=localhost:5000/hello-app:1.0
         sleep 60
-
+        kubectl describe pod hello-server
 
         kubectl get pods --all-namespaces
         kubectl get nodes
