@@ -54,35 +54,42 @@ jobs:
         kubectl create deployment hello-server --image=localhost:5000/hello-app:1.0
         sleep 60
         kubectl describe pod hello-server
-
+        export pod=`kubectl get pods |grep hello-server | awk {'print $1'}`
+        
         kubectl get pods --all-namespaces
         kubectl get nodes
         kubectl describe pod hello-server
+        kubectl logs $pod
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
         kubectl describe pod hello-server
+        kubectl logs $pod
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
         kubectl describe pod hello-server
+        kubectl logs $pod
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
         kubectl describe pod hello-server
+        kubectl logs $pod
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
         kubectl describe pod hello-server
+        kubectl logs $pod
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
         kubectl describe pod hello-server
+        kubectl logs $pod
         sleep 30
         kubectl get pods --all-namespaces
         kubectl get nodes
         kubectl describe pod hello-server
- 
+        kubectl logs $pod
 
 #        kubectl get pods --all-namespaces
 #        kubectl get nodes
