@@ -12,6 +12,7 @@ on:
   workflow_dispatch:
 env:
   CRC: ${{ secrets.CRC }}
+  LOGIN: ${{ secrets.LOGIN }}  
   
 jobs:
   crc_test:
@@ -33,16 +34,8 @@ jobs:
 
     - name: Download binaries
       run: |
-        wget https://github.com/operator-framework/operator-sdk/releases/download/v0.17.0/operator-sdk-v0.17.0-x86_64-linux-gnu
-        wget https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.16.0/crc-linux-amd64.tar.xz
-        tar -xvf crc-linux-amd64.tar.xz
-        mv ./operator-sdk-v0.17.0-x86_64-linux-gnu ./operator-sdk
-        
-        chmod +x ./operator-sdk
-        ls
-        cd crc-linux-1.16.0-amd64
-        ./crc setup
-        ./crc start -p ${CRC}
+        docker login ${LOGIN}
+        docker pull docker pull registry.redhat.io/openshift4/ose-service-ca-operator 
         
         
         
@@ -53,9 +46,3 @@ jobs:
 #        ./../tests.sh  2>&1 ./../test_logs.txt 
 #        2>&1 | tee ./../test_logs.txt 
        
-    - name: Archive logs
-      uses: actions/upload-artifact@v2
-      if: always()
-      with:
-        name: operator results
-        path: ./*.txt
