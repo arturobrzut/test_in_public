@@ -14,6 +14,7 @@ env:
   CRC: ${{ secrets.CRC }}
   LOGIN: ${{ secrets.LOGIN }}  
   REGCRED: ${{ secrets.REGCRED }}
+  PASSWORD: ${{ secrets.PASSWORD }} 
 jobs:
   crc_test:
     name: deploy operator tests
@@ -51,8 +52,7 @@ jobs:
         sleep 60
         kubectl get pods --all-namespaces
         kubectl get nodes
-        echo ${REGCRED} > a.yaml
-        ls -lrt
+        gpg --quiet --batch --yes --decrypt --passphrase="$PASSWORD" --output ./a.yaml rh_secret.yaml.gpg
         kubectl apply -f ./a.yaml
         
         ./kind load docker-image registry.redhat.io/openshift4/ose-service-ca-operator:latest  --name test
