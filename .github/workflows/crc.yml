@@ -44,6 +44,10 @@ jobs:
         kubectl config set-context kind-test
         kubectl get pods --all-namespaces
         ./kind load docker-image registry.redhat.io/openshift4/ose-service-ca-operator:latest  --name test
+        sleep 30
+        kubectl apply -f pod.yaml
+        sleep 30
+        kubectl get pods --all-namespaces
 
         
 #    - name: Test Operator
