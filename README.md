@@ -11,3 +11,6 @@ https://img.shields.io/website?label=OCP%20test%20culster&url=https%3A%2F%2Fcons
 https://img.shields.io/uptimerobot/status/m786127186-a86f251061d6fd7958c67707
 
 <img alt="Uptime Robot status" src="https://img.shields.io/uptimerobot/status/m786127186-a86f251061d6fd7958c67707">
+
+
+<img alt="Uptime Robot status" src="https://img.shields.io/uptimerobot/status/m786127186-a86f251061d6fd7958c67707?label=OCP%20test%20cluster">
