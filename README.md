@@ -4,6 +4,6 @@
 
 [![Website console-openshift-console.apps.fortest.license-service.2com](https://img.shields.io/website-up-down-green-red/https/naereen.github.io.svg)](https://console-openshift-console.apps.fortest.license-service.2com )
 
+https://img.shields.io/website?label=OCP%20test%20culster&url=https%3A%2F%2Fconsole-openshift-console.apps.fortest.license-service.com
 
-
-[![Website https://console-openshift-console.apps.fortest.license-service.com ](https://img.shields.io/website-up-down-green-red/https/naereen.github.io.svg)](https://console-openshift-console.apps.fortest.license-service.com )
+https://img.shields.io/website?label=OCP%20test%20culster&url=https%3A%2F%2Fconsole-openshift-console.apps.fortest.license-service.com
