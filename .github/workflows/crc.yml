@@ -18,97 +18,24 @@ env:
 jobs:
   crc_test:
     name: deploy operator tests
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
 
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
-        go-version: ^1.14
+        go-version: ^1.15
       id: go
 
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Download LS repository
-      run: git clone https://github.com/IBM/ibm-licensing-operator.git
-
     - name: Download binaries
       run: |
-        docker login ${LOGIN}
-        docker pull registry.redhat.io/openshift4/ose-service-ca-operator:v4.3
-        ls -lrt  ~/.docker/config.json
-        chmod +x ./kind-with-registry.sh
-
-        curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.8.0/kind-$(uname)-amd64"
-        chmod +x ./kind
         export PATH=`pwd`:$PATH
-        ./kind-with-registry.sh
-        ./kind get clusters
-        kubectl get pods --all-namespaces
-
-        cat /etc/docker/daemon.json 
-        sleep 60
-        docker tag registry.redhat.io/openshift4/ose-service-ca-operator:v4.3 localhost:5000/hello-app:1.0
-        docker push localhost:5000/hello-app:1.0
-        kubectl create deployment hello-server --image=localhost:5000/hello-app:1.0
-        sleep 60
-        kubectl describe pod hello-server
-        export pod=`kubectl get pods |grep hello-server | awk {'print $1'}`
-        
-        kubectl get pods --all-namespaces
-        kubectl get nodes
-        kubectl describe pod hello-server
-        kubectl logs $pod
-        sleep 30
-        kubectl get pods --all-namespaces
-        kubectl get nodes
-        kubectl describe pod hello-server
-        kubectl logs $pod
-        sleep 30
-        kubectl get pods --all-namespaces
-        kubectl get nodes
-        kubectl describe pod hello-server
-        kubectl logs $pod
-        sleep 30
-        kubectl get pods --all-namespaces
-        kubectl get nodes
-        kubectl describe pod hello-server
-        kubectl logs $pod
-        sleep 30
-        kubectl get pods --all-namespaces
-        kubectl get nodes
-        kubectl describe pod hello-server
-        kubectl logs $pod
-        sleep 30
-        kubectl get pods --all-namespaces
-        kubectl get nodes
-        kubectl describe pod hello-server
-        kubectl logs $pod
-        sleep 30
-        kubectl get pods --all-namespaces
-        kubectl get nodes
-        kubectl describe pod hello-server
-        kubectl logs $pod
-
-#        kubectl get pods --all-namespaces
-#        kubectl get nodes
-#        gpg --quiet --batch --yes --decrypt --passphrase="$PASSWORD" --output ./a.yaml rh_secret.yaml.gpg
-#        kubectl apply -f ./a.yaml
-        
-#        sleep 60
-#        kubectl apply -f ./pod.yaml
-#        kubectl describe pod myocp
-#        sleep 30
-
-#        ./kind load docker-image registry.redhat.io/openshift4/ose-service-ca-operator:latest  --name test
-
-#       ./kind create cluster --image kindest/node:v1.19.2 --name test
-
-#    - name: Test Operator
-#      run: |
-#        chmod +x ./tests.sh
-#        cd ./ibm-licensing-operator/
-#        ./../tests.sh  2>&1 ./../test_logs.txt 
-#        2>&1 | tee ./../test_logs.txt 
-       
+        wget https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.21.0/crc-macos-amd64.tar.xz	       
+        tar -xvf crc-macos-amd64.tar.xz 
+        cd crc-macos-1.21.0-amd64	    
+        ./crc setup	    
+        ./crc start -p $CRC    
+        	
