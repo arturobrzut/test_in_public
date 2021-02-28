@@ -41,4 +41,10 @@ jobs:
         cd crc-macos-1.22.0-amd64
         echo $CRC > ./token.txt
         ./crc setup	    
-        ./crc start -p./token.txt --log-level=DEBUG
+        ./crc start -p./token.txt
+        ./crc console --credentials
+        ./crc oc-env
+
+    - name: Run on CRC
+      run: |
+        kubectl get nodes
