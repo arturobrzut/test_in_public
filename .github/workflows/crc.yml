@@ -18,7 +18,7 @@ env:
 jobs:
   crc_test:
     name: deploy operator tests
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
 
     - name: Set up Go 1.x
