@@ -38,6 +38,7 @@ jobs:
         	
     - name: Start CRC
       run: |
-        cd crc-macos-1.22.0-amd64	    
+        cd crc-macos-1.22.0-amd64
+        echo $CRC > ./token.txt
         ./crc setup	    
-        ./crc start -p $CRC --log-level=DEBUG
+        ./crc start -p./token.txt --log-level=DEBUG
