@@ -18,7 +18,7 @@ env:
 jobs:
   crc_test:
     name: deploy operator tests
-    runs-on: macos-11.0
+    runs-on: macos-latest
     steps:
 
     - name: Set up Go 1.x
@@ -35,7 +35,10 @@ jobs:
         export PATH=`pwd`:$PATH
         wget https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.22.0/crc-macos-amd64.tar.xz	       
         tar -xvf crc-macos-amd64.tar.xz 
+        	
+    - name: Download binaries
+      run: |
         cd crc-macos-1.22.0-amd64	    
         ./crc setup	    
-        ./crc start -p $CRC    
+        ./crc start
         	
