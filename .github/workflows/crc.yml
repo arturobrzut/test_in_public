@@ -36,8 +36,8 @@ jobs:
         wget https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.22.0/crc-macos-amd64.tar.xz	       
         tar -xvf crc-macos-amd64.tar.xz 
         	
-    - name: Download binaries
+    - name: Start CRC
       run: |
         cd crc-macos-1.22.0-amd64	    
         ./crc setup	    
-        ./crc start -p $CRC
+        ./crc start -p $CRC --log-level DEBUG
