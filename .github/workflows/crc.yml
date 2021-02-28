@@ -1,0 +1,53 @@
+# This workflow will build a docker container, publish it to IBM Container Registry, and deploy it to IKS when a release is created
+#
+# To configure this workflow:
+#
+# 1. Ensure that your repository contains a Dockerfile
+# 2. Setup secrets in your repository by going to settings: Create ICR_NAMESPACE and IBM_CLOUD_API_KEY
+# 3. Change the values for the IBM_CLOUD_REGION, REGISTRY_HOSTNAME, IMAGE_NAME, IKS_CLUSTER, DEPLOYMENT_NAME, and PORT
+
+name: Operator on CRC tests
+
+on:
+  workflow_dispatch:
+env:
+  CRC: ${{ secrets.CRC }}
+  LOGIN: ${{ secrets.LOGIN }}  
+  REGCRED: ${{ secrets.REGCRED }}
+  PASSWORD: ${{ secrets.PASSWORD }} 
+jobs:
+  crc_test:
+    name: deploy operator tests
+    runs-on: macos-latest
+    steps:
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.15
+      id: go
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Download binaries
+      run: |
+        export PATH=`pwd`:$PATH
+        wget https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.22.0/crc-macos-amd64.tar.xz	       
+        tar -xvf crc-macos-amd64.tar.xz 
+        	
+    - name: Start CRC
+      run: |
+        cd crc-macos-1.22.0-amd64
+        echo $CRC > ./token.txt
+        ./crc setup	    
+        ./crc start -p./token.txt
+        echo 1
+        ./crc console --credentials
+
+    - name: Run on CRC
+      run: |
+        export PATH="/Users/runner/.crc/bin/oc:$PATH"
+        oc login -u developer -p developer https://api.crc.testing:6443 --insecure-skip-tls-verify 
+        oc get pods
+        oc get nodes
