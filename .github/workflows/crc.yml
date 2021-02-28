@@ -33,9 +33,9 @@ jobs:
     - name: Download binaries
       run: |
         export PATH=`pwd`:$PATH
-        wget https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.20.0/crc-macos-amd64.tar.xz	       
+        wget https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.22.0/crc-macos-amd64.tar.xz	       
         tar -xvf crc-macos-amd64.tar.xz 
-        cd crc-macos-1.20.0-amd64	    
+        cd crc-macos-1.22.0-amd64	    
         ./crc setup	    
         ./crc start -p $CRC    
         	
