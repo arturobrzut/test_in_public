@@ -42,9 +42,14 @@ jobs:
         echo $CRC > ./token.txt
         ./crc setup	    
         ./crc start -p./token.txt
+        echo 1
         ./crc console --credentials
+        echo 2
         ./crc oc-env
 
     - name: Run on CRC
       run: |
-        kubectl get nodes
+        export PATH="/Users/runner/.crc/bin/oc:$PATH"
+        oc login -u developer -p developer https://api.crc.testing:6443
+        oc get pods
+        oc get nodes
