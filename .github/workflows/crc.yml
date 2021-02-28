@@ -40,5 +40,5 @@ jobs:
       run: |
         cd crc-macos-1.22.0-amd64	    
         ./crc setup	    
-        ./crc start  -p $CRC    
+        ./crc start -p $CRC    
         	
