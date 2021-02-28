@@ -44,12 +44,10 @@ jobs:
         ./crc start -p./token.txt
         echo 1
         ./crc console --credentials
-        echo 2
-        ./crc oc-env
 
     - name: Run on CRC
       run: |
         export PATH="/Users/runner/.crc/bin/oc:$PATH"
-        oc login -u developer -p developer https://api.crc.testing:6443
+        oc login -u developer -p developer https://api.crc.testing:6443 --insecure-skip-tls-verify 
         oc get pods
         oc get nodes
